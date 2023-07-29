@@ -20,6 +20,13 @@ property-no-unknown 无效
 当我们 commit 提交信息时，就不能再随意写了，必须是 git commit -m 'fix: xxx' 符合类型的才可以，需要注意的是类型的后面需要用英文的 :，
 并且冒号后面是需要空一格的，这个是不能省略的
 
+nvm 环境下，
+配置 ~/.huskyrc 文件，
+https://typicode.github.io/husky/troubleshooting.html
+不然 per-commit文件中 报 ‘pnpm command无效’
+
+
+
 
 
 
