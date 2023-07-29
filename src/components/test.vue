@@ -1,7 +1,11 @@
 <template>
-  <div>test</div>
+  <div class="mywrap">test</div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.mywrap {
+  color: $color;
+}
+</style>
