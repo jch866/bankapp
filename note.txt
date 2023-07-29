@@ -32,7 +32,8 @@ per-commit文件中 pnpm run format 这个命名有BUG
 当有手动修改 package.json 时，已经快要提交了，package.json文件才显示正常修改
 可以和编辑器保存时自动格式化插件有冲突
 
-
+import Test from '@/components/test.vue' 
+有红色警告  把vetur 卸载 再重启     vetur 插件对vue3支持不太好
 
 
 

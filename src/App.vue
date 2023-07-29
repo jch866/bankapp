@@ -6,8 +6,10 @@
     layout="prev, pager, next"
     :total="1000"
   ></el-pagination>
+  <Test></Test>
 </template>
 <script setup lang="ts">
 import { Plus } from "@element-plus/icons-vue";
+import Test from '@/components/test.vue'
 </script>
 <style scoped lang="scss"></style>
