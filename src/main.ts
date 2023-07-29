@@ -9,5 +9,9 @@ const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCn,
 });
-
+//svg 插件配置代码
+import "virtual:svg-icons-register";
+//注册全局组件
+import SvgIcon from "@/components/SvgIcon/index.vue";
+app.component("SvgIcon", SvgIcon);
 app.mount("#app");
