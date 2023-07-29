@@ -1,0 +1,7 @@
+无法检查错误的样式属性名
+http://stylelint.docschina.org/user-guide/rules/
+
+stylelint
+property-no-unknown 无效 
+写错了属性名，检查不出来；
+无用的样式名，检查不出来；
