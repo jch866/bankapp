@@ -34,7 +34,10 @@ per-commit文件中 pnpm run format 这个命名有BUG
 
 import Test from '@/components/test.vue' 
 有红色警告  把vetur 卸载 再重启     vetur 插件对vue3支持不太好
+vue3推荐使用volar
 
+console.log(import.meta.env) 获取环境变量 .env
+.env中的变量必须以 VITE_ 为前缀才能暴露给外部读取
 
 
 
