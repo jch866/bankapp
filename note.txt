@@ -25,6 +25,18 @@ nvm 环境下，
 https://typicode.github.io/husky/troubleshooting.html
 不然 per-commit文件中 报 ‘pnpm command无效’
 
+"preinstall": "node ./scripts/preinstall.js"   无效
+限制了pnpm 后  npm还是可以执行
+
+per-commit文件中 pnpm run format 这个命名有BUG
+当有手动修改 package.json 时，已经快要提交了，package.json文件才显示正常修改
+可以和编辑器保存时自动格式化插件有冲突
+
+
+
+
+
+
 
 
 
