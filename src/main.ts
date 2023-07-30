@@ -12,10 +12,12 @@ import "virtual:svg-icons-register";
 // app.component("SvgIcon", SvgIcon);
 import GlobalComponent from "@/components/index.ts";
 import router from "./router";
+import pinia from "./store";
 const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCn,
 });
+app.use(pinia);
 //批量安装自定义组件
 app.use(GlobalComponent);
 app.use(router);
