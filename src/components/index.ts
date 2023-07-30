@@ -9,7 +9,6 @@ export default {
   install(app: any) {
     // console.log(app)
     Object.keys(allComponents).forEach((key) => {
-      console.log(key);
       app.component(key, allComponents[key]);
     });
   },

@@ -8,5 +8,16 @@
 <script setup lang="ts">
 import { Plus } from "@element-plus/icons-vue";
 import Test from "@/components/test.vue";
+import request from "@/utils/request.ts";
+import { onMounted } from "vue";
+onMounted(() => {
+  const data = {
+    username: "admin",
+    password: "111111",
+  };
+  request("/user/login", data, "post").then((res) => {
+    console.log(res);
+  });
+});
 </script>
 <style scoped lang="scss"></style>
