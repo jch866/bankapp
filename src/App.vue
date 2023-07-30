@@ -1,6 +1,6 @@
 <template>
   <el-button type="danger" :icon="Plus">123</el-button>
-
+  <router-view></router-view>
   <Test></Test>
 
   <svg-icon name="home" color="blue" width="30px" height="30px" />
