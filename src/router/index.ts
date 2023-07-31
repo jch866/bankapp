@@ -1,5 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import { routes } from "./routes";
+import { GET_TOKEN } from "@/utils/util";
+import { useRouter } from "vue-router";
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
@@ -11,5 +14,12 @@ const router = createRouter({
     };
   },
 });
-
+router.beforeEach((to, from, next) => {
+  const LOGINPATH = "/login";
+  if (to.path !== LOGINPATH && !GET_TOKEN()) {
+    next({ path: LOGINPATH });
+  } else {
+    next();
+  }
+});
 export default router;
