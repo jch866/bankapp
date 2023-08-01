@@ -1,7 +1,7 @@
 <!-- 组件库有布局container代码 -->
 <template>
   <div class="layout_container">
-    <div class="layout_slider">
+    <div class="layout_slider" :class="{ fold: !!layOutSettingStore.fold }">
       <Logo />
       <el-scrollbar class="scrollbar">
         <!-- router : 是否启用 vue-router 模式。 启用该模式会在激活导航时以 index 作为 path 进行路由跳转 使用 default-active 来设置加载时的激活项。 -->
@@ -12,15 +12,18 @@
           text-color="#fff"
           router
           :default-active="$route.path"
+          :collapse="layOutSettingStore.fold"
+          :collapse-transition="false"
         >
           <Menu :menuList="useUser.menuRoutes"></Menu>
         </el-menu>
       </el-scrollbar>
     </div>
-    <div class="layout_tabbar">
+
+    <div class="layout_tabbar" :class="{ fold: !!layOutSettingStore.fold }">
       <Tabbar />
     </div>
-    <div class="layout_main">
+    <div class="layout_main" :class="{ fold: !!layOutSettingStore.fold }">
       <Main />
     </div>
   </div>
@@ -37,12 +40,18 @@ import Main from "./main/index.vue";
 //引入顶部tabbar组件
 import Tabbar from "./tabbar/index.vue";
 import useUserStore from "@/store/modules/user";
+import useLayOutSettingStore from "@/store/modules/setting";
 const useUser = useUserStore();
 console.log(useUser.menuRoutes);
+const layOutSettingStore = useLayOutSettingStore();
 const $route = useRoute();
 console.log($route.path);
 </script>
-
+<script lang="ts">
+export default {
+  name: "Layout",
+};
+</script>
 <style scoped lang="scss">
 .layout_container {
   width: 100%;
@@ -53,7 +62,7 @@ console.log($route.path);
     width: $base-menu-width;
     height: 100vh;
     background: $base-menu-background;
-
+    transition: all 0.3s;
     .scrollbar {
       width: 100%;
       height: calc(100vh - $base-menu-logo-height - 10px);
@@ -61,6 +70,9 @@ console.log($route.path);
       .el-menu {
         border-right: none;
       }
+    }
+    &.fold {
+      width: $base-menu-min-width;
     }
   }
 
@@ -71,6 +83,10 @@ console.log($route.path);
     top: 0px;
     left: $base-menu-width;
     transition: all 0.3s;
+    &.fold {
+      width: calc(100vw - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 
   .layout_main {
@@ -82,6 +98,11 @@ console.log($route.path);
     top: $base-tabbar-height;
     padding: 20px;
     overflow: auto;
+    transition: all 0.3s;
+    &.fold {
+      width: calc(100vw - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 }
 </style>

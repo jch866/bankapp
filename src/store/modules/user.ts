@@ -25,6 +25,7 @@ const useUserStore = defineStore("user", {
       } else {
       }
     },
+    userLogout() {},
   },
   getters: {},
 });

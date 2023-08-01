@@ -1,5 +1,5 @@
 <template>
-  <template v-for="(item, index) in menuList" :key="item.path">
+  <template v-for="item in menuList" :key="item.path">
     <!-- 无子路由 -->
     <template
       v-if="!item.children || (item.children && item.children.length === 0)"
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 defineProps(["menuList"]);
-const goRoute = (vc) => {
+const goRoute = (vc: any) => {
   console.log(vc.index);
 };
 </script>

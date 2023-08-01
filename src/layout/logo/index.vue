@@ -8,7 +8,11 @@
 <script setup lang="ts">
 import setting from "./setting";
 </script>
-
+<script lang="ts">
+export default {
+  name: "Login",
+};
+</script>
 <style scoped lang="scss">
 .logo {
   display: flex;
@@ -23,7 +27,9 @@ import setting from "./setting";
 
   p {
     flex: 1;
+    font-size: $base-logo-title-fontSize;
     padding-left: 10px;
+    white-space: nowrap;
   }
 }
 </style>

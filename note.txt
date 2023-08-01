@@ -1,3 +1,5 @@
+网友的项目笔记： https://www.yuque.com/aosika-j6ubd/kucrsm
+
 无法检查错误的样式属性名
 http://stylelint.docschina.org/user-guide/rules/
 
@@ -39,10 +41,34 @@ vue3推荐使用volar
 console.log(import.meta.env) 获取环境变量 .env
 .env中的变量必须以 VITE_ 为前缀才能暴露给外部读取
 
+vscode自带格式化配置在哪里修改；
+js对象转换ts类型插件  JS To TS
+
+路由滚动行为 scrollBehavior ？
+
+// const useUserStore = defineStore('user', ()=>{  setup写法
+    // ref()  对应 state;
+    // computed() 对应getters;
+    // function() 对应 actions;
+    // return {...}
+// })
+
+pinia-plugin-persistedstate
 
 
+路由拦截写在哪里？导出路由的地方
+ 
+路由显示隐藏时的判断？不一起放在v-if中用 && 连接？
 
+RMS的菜单路由是如何设置的
+router-view v-slot="{ Component }"  v-slot中为什么有首字母大写的Component？
 
+el-menu-item高度减小
 
+给组件起名，方便开发者工具调试 不然有些组件就显示文件名比如Index
+
+.layout_tabbar 和 layout_main 布局包在一起可能会好一点
+
+white-space: nowrap; 解决菜单折叠时 Logo组件过渡的显示问题
 
 
