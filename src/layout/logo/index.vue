@@ -14,7 +14,7 @@ import setting from "./setting";
   display: flex;
   width: 100%;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
 
   img {
     height: 50px;

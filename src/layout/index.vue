@@ -46,7 +46,7 @@ console.log(useUser.menuRoutes);
     background: $base-menu-background;
     .scrollbar {
       width: 100%;
-      height: calc(100vh - $base-menu-logo-height);
+      height: calc(100vh - $base-menu-logo-height - 10px);
 
       .el-menu {
         border-right: none;
