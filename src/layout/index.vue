@@ -5,7 +5,14 @@
       <Logo />
       <el-scrollbar class="scrollbar">
         <!-- router : 是否启用 vue-router 模式。 启用该模式会在激活导航时以 index 作为 path 进行路由跳转 使用 default-active 来设置加载时的激活项。 -->
-        <el-menu background-color="#001529" text-color="#fff" router>
+        <!-- collapse -->
+        <!-- default-active 页面加载时默认激活菜单的 index -->
+        <el-menu
+          background-color="#001529"
+          text-color="#fff"
+          router
+          :default-active="$route.path"
+        >
           <Menu :menuList="useUser.menuRoutes"></Menu>
         </el-menu>
       </el-scrollbar>
@@ -20,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 //引入左侧菜单logo子组件
 import Logo from "./logo/index.vue";
 //引入菜单组件
@@ -28,10 +36,11 @@ import Menu from "./menu/index.vue";
 import Main from "./main/index.vue";
 //引入顶部tabbar组件
 import Tabbar from "./tabbar/index.vue";
-
 import useUserStore from "@/store/modules/user";
 const useUser = useUserStore();
 console.log(useUser.menuRoutes);
+const $route = useRoute();
+console.log($route.path);
 </script>
 
 <style scoped lang="scss">
@@ -44,6 +53,7 @@ console.log(useUser.menuRoutes);
     width: $base-menu-width;
     height: 100vh;
     background: $base-menu-background;
+
     .scrollbar {
       width: 100%;
       height: calc(100vh - $base-menu-logo-height - 10px);
@@ -61,7 +71,6 @@ console.log(useUser.menuRoutes);
     top: 0px;
     left: $base-menu-width;
     transition: all 0.3s;
-    background: rgb(184, 184, 255);
   }
 
   .layout_main {
