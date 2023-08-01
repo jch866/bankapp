@@ -4,7 +4,8 @@
     <div class="layout_slider">
       <Logo />
       <el-scrollbar class="scrollbar">
-        <el-menu background-color="#001529" text-color="#fff">
+        <!-- router : 是否启用 vue-router 模式。 启用该模式会在激活导航时以 index 作为 path 进行路由跳转 使用 default-active 来设置加载时的激活项。 -->
+        <el-menu background-color="#001529" text-color="#fff" router>
           <Menu :menuList="useUser.menuRoutes"></Menu>
         </el-menu>
       </el-scrollbar>
@@ -60,7 +61,7 @@ console.log(useUser.menuRoutes);
     top: 0px;
     left: $base-menu-width;
     transition: all 0.3s;
-    background: blue;
+    background: rgb(184, 184, 255);
   }
 
   .layout_main {
