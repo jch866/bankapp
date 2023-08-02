@@ -4,10 +4,11 @@ export const routes = [
     component: () => import("@/layout/index.vue"),
     name: "layout",
     meta: {
-      title: "layout",
+      title: "", //为空，隐藏面包屑
       hidden: false, // 是否在左侧菜单栏中显示
       icon: "FullScreen",
     },
+    redirect: "/home",
     children: [
       {
         path: "/home",

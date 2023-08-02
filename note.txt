@@ -71,4 +71,9 @@ el-menu-item高度减小
 
 white-space: nowrap; 解决菜单折叠时 Logo组件过渡的显示问题
 
+useRoute().matched 匹配路由
+v-show="item.meta.title"  隐藏面包屑信息，比如layout为父路由时
 
+判断当前是不是全屏模式
+document.fullscreenElement;
+document.documentElement.requestFullscreen() DOM全屏方法
