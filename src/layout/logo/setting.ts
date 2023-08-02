@@ -1,5 +1,5 @@
 export default {
-  title: "运营平台运营平台",
+  title: "武汉农商行监控应用",
   image: "./public/vite.svg",
   hideLogo: false,
 };

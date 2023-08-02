@@ -1,4 +1,5 @@
 import axios from "axios";
+import useUserStore from "@/store/modules/user";
 import { ElMessage } from "element-plus";
 //request 是axios实例
 const request = axios.create({
@@ -6,8 +7,9 @@ const request = axios.create({
   timeout: 5000,
 });
 request.interceptors.request.use((config) => {
+  let userStore = useUserStore();
   console.log(config);
-  config.headers.token = "";
+  config.headers.token = userStore.token || "";
   return config;
 });
 request.interceptors.response.use(
