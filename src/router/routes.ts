@@ -20,16 +20,6 @@ export const routes = [
           icon: "House",
         },
       },
-      // {
-      //   path: "/test",
-      //   component: () => import("@/views/home/index.vue"),
-      //   name: "test",
-      //   meta: {
-      //     title: "测试路由",
-      //     hidden:false,
-      //     icon:'Service'
-      //   },
-      // },
     ],
   },
   {

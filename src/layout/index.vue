@@ -83,6 +83,7 @@ export default {
     top: 0px;
     left: $base-menu-width;
     transition: all 0.3s;
+    border-bottom: 2px solid #cbcbcb;
     &.fold {
       width: calc(100vw - $base-menu-min-width);
       left: $base-menu-min-width;
@@ -91,7 +92,6 @@ export default {
 
   .layout_main {
     position: absolute;
-    background: pink;
     width: calc(100% - $base-menu-width);
     height: calc(100vh - $base-tabbar-height);
     left: $base-menu-width;
