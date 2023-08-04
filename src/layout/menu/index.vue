@@ -7,7 +7,7 @@
       <el-menu-item
         v-if="!item.meta.hidden"
         :index="item.path"
-        @click="goRoute"
+        @click="goRoute(item)"
       >
         <el-icon>
           <component :is="item.meta.icon"></component>
@@ -56,9 +56,25 @@
 </template>
 
 <script setup lang="ts">
+import useHeadTagsStore from "@/store/modules/tags";
+import type { RouteRecordRaw } from "vue-router";
+const headTagsStore = useHeadTagsStore();
 defineProps(["menuList"]);
-const goRoute = (vc: any) => {
-  console.log(vc.index);
+const goRoute = (item: RouteRecordRaw) => {
+  console.log(item.path);
+  // 加入keepalive缓存
+  headTagsStore.addKeepAliveCache(item.path);
+  let submenu = {
+    path: item.path,
+    name: item.meta?.title,
+    label: item.meta?.title,
+  };
+  const excludePath = ["/screen"];
+  //禁止加入tags
+  if (excludePath.includes(item.path)) {
+    return;
+  }
+  headTagsStore.selectMenu(submenu);
 };
 </script>
 <!-- 两组标签 script-->

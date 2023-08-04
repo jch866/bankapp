@@ -22,6 +22,7 @@
 
     <div class="layout_tabbar" :class="{ fold: !!layOutSettingStore.fold }">
       <Tabbar />
+      <HeadTags />
     </div>
     <div class="layout_main" :class="{ fold: !!layOutSettingStore.fold }">
       <Main />
@@ -39,10 +40,11 @@ import Menu from "./menu/index.vue";
 import Main from "./main/index.vue";
 //引入顶部tabbar组件
 import Tabbar from "./tabbar/index.vue";
+import HeadTags from "./headtags/index.vue";
 import useUserStore from "@/store/modules/user";
 import useLayOutSettingStore from "@/store/modules/setting";
 const useUser = useUserStore();
-console.log(useUser.menuRoutes);
+// console.log(useUser.menuRoutes);
 const layOutSettingStore = useLayOutSettingStore();
 const $route = useRoute();
 console.log($route.path);
@@ -93,9 +95,9 @@ export default {
   .layout_main {
     position: absolute;
     width: calc(100% - $base-menu-width);
-    height: calc(100vh - $base-tabbar-height);
+    height: calc(100vh - $base-tabbar-height - $base-head-tags-height);
     left: $base-menu-width;
-    top: $base-tabbar-height;
+    top: calc($base-tabbar-height + $base-head-tags-height);
     padding: 20px;
     overflow: auto;
     transition: all 0.3s;

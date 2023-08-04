@@ -7,6 +7,18 @@ export const GET_TOKEN = () => {
 export const DEL_TOKEN = () => {
   window.localStorage.removeItem("TOKEN");
 };
+export const set_tags = (tag: any) => {
+  window.sessionStorage.setItem("tags_list", JSON.stringify(tag));
+};
+export const get_tags = () => {
+  return JSON.parse(window.sessionStorage.getItem("tags_list") as string);
+};
+export const set_activePath = (path: any) => {
+  window.sessionStorage.setItem("tags_activePath", path);
+};
+export const get_activePath = () => {
+  return window.sessionStorage.getItem("tags_activePath");
+};
 //封装一个函数:获取一个结果:当前早上|上午|下午|晚上
 export const getTime = () => {
   let message = "";
