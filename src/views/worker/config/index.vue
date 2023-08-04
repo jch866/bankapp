@@ -1,5 +1,5 @@
 <template>
-  <div>sku</div>
+  <div>config</div>
 </template>
 
 <script setup lang="ts"></script>

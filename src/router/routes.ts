@@ -4,7 +4,7 @@ export const routes = [
     component: () => import("@/layout/index.vue"),
     name: "layout",
     meta: {
-      title: "", //为空，隐藏面包屑
+      title: "主页", //为空，隐藏面包屑
       hidden: false, // 是否在左侧菜单栏中显示
       icon: "FullScreen",
     },
@@ -21,16 +21,6 @@ export const routes = [
         },
       },
     ],
-  },
-  {
-    path: "/screen",
-    component: () => import("@/views/screen/index.vue"),
-    name: "Screen",
-    meta: {
-      title: "大数据",
-      hidden: false,
-      icon: "Service",
-    },
   },
   {
     path: "/login",
@@ -54,40 +44,22 @@ export const routes = [
     },
   },
   {
-    path: "/acl",
+    path: "/task",
     component: () => import("@/layout/index.vue"),
-    name: "Acl",
+    name: "Task",
     meta: {
-      title: "权限管理",
+      title: "预警监控",
       icon: "Lock",
     },
-    redirect: "/acl/user",
+    redirect: "/task/warning",
     children: [
       {
-        path: "/acl/user",
-        component: () => import("@/views/acl/user/index.vue"),
-        name: "User",
+        path: "/task/warning",
+        component: () => import("@/views/task/warning/index.vue"),
+        name: "Warning",
         meta: {
-          title: "用户管理",
+          title: "任务预警",
           icon: "User",
-        },
-      },
-      {
-        path: "/acl/role",
-        component: () => import("@/views/acl/role/index.vue"),
-        name: "Role",
-        meta: {
-          title: "角色管理",
-          icon: "UserFilled",
-        },
-      },
-      {
-        path: "/acl/permission",
-        component: () => import("@/views/acl/permission/index.vue"),
-        name: "Permission",
-        meta: {
-          title: "菜单管理",
-          icon: "Monitor",
         },
       },
     ],
@@ -97,45 +69,39 @@ export const routes = [
     component: () => import("@/layout/index.vue"),
     name: "Product",
     meta: {
-      title: "商品管理",
+      title: "流程实时查询",
       icon: "Goods",
     },
-    redirect: "/product/trademark",
+    redirect: "/flow/summary",
     children: [
       {
-        path: "/product/trademark",
-        component: () => import("@/views/product/trademark/index.vue"),
-        name: "Trademark",
+        path: "/flow/summary",
+        component: () => import("@/views/flow/summary/index.vue"),
+        name: "Summary",
         meta: {
-          title: "品牌管理",
+          title: "流程汇总查询",
           icon: "ShoppingCartFull",
         },
       },
+    ],
+  },
+  {
+    path: "/worker",
+    component: () => import("@/layout/index.vue"),
+    name: "worker",
+    meta: {
+      title: "集中作业平台参数维护",
+      icon: "Goods",
+    },
+    redirect: "/worker/config",
+    children: [
       {
-        path: "/product/attr",
-        component: () => import("@/views/product/attr/index.vue"),
-        name: "Attr",
+        path: "/worker/config",
+        component: () => import("@/views/worker/config/index.vue"),
+        name: "config",
         meta: {
-          title: "属性管理",
-          icon: "ChromeFilled",
-        },
-      },
-      {
-        path: "/product/spu",
-        component: () => import("@/views/product/spu/index.vue"),
-        name: "Spu",
-        meta: {
-          title: "SPU管理",
-          icon: "Calendar",
-        },
-      },
-      {
-        path: "/product/sku",
-        component: () => import("@/views/product/sku/index.vue"),
-        name: "Sku",
-        meta: {
-          title: "SKU管理",
-          icon: "Orange",
+          title: "人员配置",
+          icon: "ShoppingCartFull",
         },
       },
     ],
