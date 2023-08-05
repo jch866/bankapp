@@ -77,3 +77,14 @@ v-show="item.meta.title"  隐藏面包屑信息，比如layout为父路由时
 判断当前是不是全屏模式
 document.fullscreenElement;
 document.documentElement.requestFullscreen() DOM全屏方法
+
+store是一个reactive包装的对象，如果解构的话，解构出来的值可能会失去响应式
+非要解构带响应式的话  const {fold} = storeToRefs(layOutSettingStore) 暂不推荐
+layOutSettingStore.$patch({})
+layOutSettingStore.$reset()
+layOutSettingStore.change()
+
+开发一个功能不可过于急躁，先开发出静态功能
+activepath   标签缓存 
+优化路由 布局重构后，layout就不是一个路由组件了，普通组件
+手动修改路由跳转到404  标签应该取消active状态 清除之前的session

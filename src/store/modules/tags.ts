@@ -4,6 +4,7 @@ import {
   get_tags,
   set_activePath,
   get_activePath,
+  del_activePath,
 } from "@/utils/util";
 interface tagsListType {
   path: string;
@@ -76,7 +77,7 @@ const useHeadTagsStore = defineStore("headTagsStore", {
       }
       if (this.cache_tags.indexOf(val) === -1) {
         this.cache_tags.push(val);
-        console.log(this.cache_tags);
+        // console.log(this.cache_tags);
       }
     },
     // 删除keepalive缓存
@@ -89,7 +90,7 @@ const useHeadTagsStore = defineStore("headTagsStore", {
         }
       }
       this.cache_tags = cache;
-      console.log(this.cache_tags);
+      // console.log(this.cache_tags);
     },
     // setTranx(val: string) {
     //     console.log(val)
@@ -110,6 +111,11 @@ const useHeadTagsStore = defineStore("headTagsStore", {
       set_activePath(this.activePath);
       // this.activeName = val.subName + "-" + val.index
       // this.openNames = [val.subName as string]
+    },
+    clearActivePath() {
+      this.activePath = "";
+      del_activePath();
+      console.log("clearActivePath");
     },
   },
 });

@@ -21,7 +21,7 @@
     </template>
 
     <!-- 子路由为1个 当前情况是 首页作为layout的第一个子路由来定的逻辑-->
-    <template v-if="item.children && item.children.length === 1">
+    <!-- <template v-if="item.children && item.children.length === 1">
       <el-menu-item
         v-if="!item.children[0].meta.hidden"
         :index="item.children[0].path"
@@ -35,11 +35,11 @@
           </span>
         </template>
       </el-menu-item>
-    </template>
+    </template> -->
 
     <!-- 子路由大于1个 el-sub-menu -->
     <el-sub-menu
-      v-if="item.children && item.children.length > 1"
+      v-if="item.children && item.children.length > 0"
       :index="item.path"
     >
       <template #title>
@@ -61,7 +61,7 @@ import type { RouteRecordRaw } from "vue-router";
 const headTagsStore = useHeadTagsStore();
 defineProps(["menuList"]);
 const goRoute = (item: RouteRecordRaw) => {
-  console.log(item.path);
+  // console.log(item.path);
   // 加入keepalive缓存
   headTagsStore.addKeepAliveCache(item.path);
   let submenu = {

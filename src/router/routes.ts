@@ -1,26 +1,27 @@
 export const routes = [
+  // {
+  //   path: "/",
+  //   component: () => import("@/layout/index.vue"),
+  //   name: "Layout",
+  //   meta: {
+  //     title: "", //为空，隐藏面包屑
+  //     hidden: false, // 是否在左侧菜单栏中显示
+  //     icon: "FullScreen",
+  //   },
+  //   redirect: "/home",
+  //   // children: [
+
+  //   // ],
+  // },
   {
     path: "/",
-    component: () => import("@/layout/index.vue"),
-    name: "layout",
+    component: () => import("@/views/home/index.vue"),
+    name: "home",
     meta: {
-      title: "", //为空，隐藏面包屑
-      hidden: false, // 是否在左侧菜单栏中显示
-      icon: "FullScreen",
+      title: "首页",
+      hidden: false,
+      icon: "House",
     },
-    redirect: "/home",
-    children: [
-      {
-        path: "/home",
-        component: () => import("@/views/home/index.vue"),
-        name: "home",
-        meta: {
-          title: "主页",
-          hidden: false,
-          icon: "House",
-        },
-      },
-    ],
   },
   {
     path: "/screen",
@@ -35,7 +36,7 @@ export const routes = [
   {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
-    name: "login",
+    name: "Login",
     meta: {
       title: "登录",
       hidden: true,
@@ -55,7 +56,7 @@ export const routes = [
   },
   {
     path: "/acl",
-    component: () => import("@/layout/index.vue"),
+    // component: () => import("@/layout/index.vue"),
     name: "Acl",
     meta: {
       title: "权限管理",
@@ -94,7 +95,7 @@ export const routes = [
   },
   {
     path: "/product",
-    component: () => import("@/layout/index.vue"),
+    // component: () => import("@/layout/index.vue"),
     name: "Product",
     meta: {
       title: "商品管理",
