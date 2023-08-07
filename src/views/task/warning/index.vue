@@ -9,32 +9,30 @@
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="6"> <el-form-item label="节点名称">
+      <el-col :span="6">
+        <el-form-item label="节点名称">
           <el-select v-model="search.node" placeholder="--请选择--">
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
-        </el-form-item></el-col>
-      <el-col :span="6"><el-form-item label="流程类型">
+        </el-form-item>
+      </el-col>
+      <el-col :span="6">
+        <el-form-item label="流程类型">
           <el-select v-model="search.flow" placeholder="--请选择--">
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
-        </el-form-item></el-col>
+        </el-form-item>
+      </el-col>
       <el-col :span="6">
-
-        <el-button size="small" @click="getData">查询</el-button></el-col>
-
+        <el-button size="small" @click="getData">查询</el-button>
+      </el-col>
     </el-row>
-
-
-
   </div>
-  <div class="echarts_box">
-
-  </div>
+  <div class="echarts_box"></div>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column type='index' label="" width="50" align="center" />
+    <el-table-column type="index" label="" width="50" align="center" />
     <el-table-column prop="date" label="节点名称" width="180" />
     <el-table-column label="红色预警" align="center">
       <el-table-column prop="state" label="笔数(明细)" width="120" />
@@ -55,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted } from "vue";
 // interface Isearch{
 //   flow?:'',
 //   node?:'',
@@ -65,11 +63,11 @@ const search = reactive<any>({});
 let tableData = reactive<any>([]);
 
 function getData() {
-  console.log('getData warning')
+  console.log("getData warning");
 }
 onMounted(() => {
-  getData()
-})
+  getData();
+});
 tableData = [
   {
     date: "2016-05-03",
@@ -95,7 +93,7 @@ tableData = [
 </script>
 
 <style scoped>
-:deep(.cell){
-    text-align: center;
+:deep(.cell) {
+  text-align: center;
 }
 </style>
