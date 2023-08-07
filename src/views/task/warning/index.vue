@@ -26,12 +26,16 @@
         </el-form-item>
       </el-col>
       <el-col :span="6">
-        <el-button size="small" @click="getData">查询</el-button>
+        <el-button @click="searchHandle">查询</el-button>
       </el-col>
     </el-row>
   </div>
   <div class="echarts_box"></div>
-  <el-table :data="tableData" style="width: 100%">
+  <el-table
+    :data="tableData"
+    style="width: 100%"
+    header-cell-class-name="table-header-th"
+  >
     <el-table-column type="index" label="" width="50" align="center" />
     <el-table-column prop="date" label="节点名称" width="180" />
     <el-table-column label="红色预警" align="center">
@@ -68,26 +72,27 @@ function getData() {
 onMounted(() => {
   getData();
 });
+function searchHandle() {}
 tableData = [
   {
     date: "2016-05-03",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
+    address: "No. 189",
   },
   {
     date: "2016-05-02",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
+    address: "No. 189",
   },
   {
     date: "2016-05-04",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
+    address: "No. 189",
   },
   {
     date: "2016-05-01",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
+    address: "No. 189",
   },
 ];
 </script>
@@ -95,5 +100,6 @@ tableData = [
 <style scoped>
 :deep(.cell) {
   text-align: center;
+  padding: 0 4px;
 }
 </style>

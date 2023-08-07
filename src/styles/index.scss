@@ -13,6 +13,18 @@
     background-color: rgb(229, 248, 215);
     border-radius: 10px;
 }
-:deep(.cell){
-    text-align: center;
+.table-header-th{
+    color: $base-menu-background;
+    padding: 3px 0!important;
+    font-weight: 500!important;
+}
+
+.search_box{
+    font-size: 13px;
+    border-bottom: 1px solid #cbcbcb;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    & .el-form-item{
+        margin-bottom: 10px;
+    }
 }
