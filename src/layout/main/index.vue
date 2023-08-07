@@ -1,11 +1,10 @@
 <template>
-  <keep-alive>
-    <router-view v-slot="{ Component }">
+  <!-- <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" v-if="flag"></component>
       </transition>
-    </router-view>
-  </keep-alive>
+    </router-view>  -->
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">

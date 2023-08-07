@@ -1,13 +1,76 @@
 <template>
+  <div class="search_box">
+    <el-row>
+      <el-col :span="6">
+        <el-form-item label="机构类型">
+          <el-select v-model="search.region" placeholder="--请选择--">
+            <el-option label="Zone one" value="shanghai" />
+            <el-option label="Zone two" value="beijing" />
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="6"> <el-form-item label="节点名称">
+          <el-select v-model="search.node" placeholder="--请选择--">
+            <el-option label="Zone one" value="shanghai" />
+            <el-option label="Zone two" value="beijing" />
+          </el-select>
+        </el-form-item></el-col>
+      <el-col :span="6"><el-form-item label="流程类型">
+          <el-select v-model="search.flow" placeholder="--请选择--">
+            <el-option label="Zone one" value="shanghai" />
+            <el-option label="Zone two" value="beijing" />
+          </el-select>
+        </el-form-item></el-col>
+      <el-col :span="6">
+
+        <el-button size="small" @click="getData">查询</el-button></el-col>
+
+    </el-row>
+
+
+
+  </div>
+  <div class="echarts_box">
+
+  </div>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="date" label="Date" width="180" />
-    <el-table-column prop="name" label="Name" width="180" />
-    <el-table-column prop="address" label="Address" />
+    <el-table-column type='index' label="" width="50" align="center" />
+    <el-table-column prop="date" label="节点名称" width="180" />
+    <el-table-column label="红色预警" align="center">
+      <el-table-column prop="state" label="笔数(明细)" width="120" />
+      <el-table-column prop="city" label="个人待处理" width="120" />
+      <el-table-column prop="state" label="公共待处理" width="120" />
+    </el-table-column>
+    <el-table-column label="黄色预警" align="center">
+      <el-table-column prop="state" label="笔数(明细)" width="120" />
+      <el-table-column prop="city" label="个人待处理" width="120" />
+      <el-table-column prop="state" label="公共待处理" width="120" />
+    </el-table-column>
+    <el-table-column label="正常节点" align="center">
+      <el-table-column prop="state" label="笔数(明细)" width="120" />
+      <el-table-column prop="city" label="个人待处理" width="120" />
+      <el-table-column prop="state" label="公共待处理" width="120" />
+    </el-table-column>
   </el-table>
 </template>
 
 <script setup lang="ts">
-const tableData = [
+import { reactive, onMounted } from 'vue';
+// interface Isearch{
+//   flow?:'',
+//   node?:'',
+//   region?:''
+// }
+const search = reactive<any>({});
+let tableData = reactive<any>([]);
+
+function getData() {
+  console.log('getData warning')
+}
+onMounted(() => {
+  getData()
+})
+tableData = [
   {
     date: "2016-05-03",
     name: "Tom",
@@ -31,4 +94,8 @@ const tableData = [
 ];
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.cell){
+    text-align: center;
+}
+</style>

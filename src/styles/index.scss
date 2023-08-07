@@ -10,6 +10,9 @@
 
 ::-webkit-scrollbar-thumb {
     width: 10px;
-    background-color: yellowgreen;
+    background-color: rgb(229, 248, 215);
     border-radius: 10px;
+}
+:deep(.cell){
+    text-align: center;
 }

@@ -69,10 +69,7 @@ const login = async () => {
   await loginForms.value.validate();
   //加载效果:开始加载
   loading.value = true;
-  //点击登录按钮以后干什么?
-  //通知仓库发登录请求
-  //请求成功->首页展示数据的地方
-  //请求失败->弹出登录失败信息
+
   try {
     //保证登录成功
     await useStore.userLogin(loginForm);
@@ -99,7 +96,7 @@ const login = async () => {
   }
 };
 //自定义校验规则函数
-const validatorUserName = (rule: any, value: any, callback: any) => {
+const validatorUserName = (_rule: any, value: any, callback: any) => {
   //rule:即为校验规则对象
   //value:即为表单元素文本内容
   //函数:如果符合条件callBack放行通过即为
@@ -111,7 +108,7 @@ const validatorUserName = (rule: any, value: any, callback: any) => {
   }
 };
 
-const validatorPassword = (rule: any, value: any, callback: any) => {
+const validatorPassword = (_rule: any, value: any, callback: any) => {
   if (value.length >= 6) {
     callback();
   } else {

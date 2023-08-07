@@ -4,6 +4,8 @@ import {
   get_tags,
   set_activePath,
   get_activePath,
+  default_activePath,
+  default_activeName,
 } from "@/utils/util";
 interface tagsListType {
   path: string;
@@ -24,26 +26,15 @@ const useHeadTagsStore = defineStore("headTagsStore", {
   state: (): stateDataType => {
     return {
       cache_tags: [],
-      activePath: get_activePath() || "/",
+      activePath: get_activePath() || default_activePath,
       openNames: [],
       // activeName: "",
-      // tranx: "-0",
       tagsList: get_tags() || [
-        { path: "/", name: "首页" },
-        // { path: '/acl/user', label: '用户管理', name: '用户管理' },
-        // { path: '/product/trademark', label: '品牌管理', name: '品牌管理' }
+        { path: default_activePath, name: default_activeName },
       ],
     };
   },
   actions: {
-    clearTags() {
-      this.cache_tags = [];
-      this.activePath = "/";
-      this.openNames = [];
-      // this.activeName = ""
-      // this.tranx = "-0"
-      this.tagsList = [{ path: "/", name: "home" }];
-    },
     // 跳转页面执行
     selectMenu(submenu: any) {
       var activePath = submenu.path;
@@ -69,32 +60,7 @@ const useHeadTagsStore = defineStore("headTagsStore", {
       // this.activeName = submenu.subName + "-" + submenu.index
       // this.openNames = [submenu.subName]
     },
-    // 添加keepalive缓存
-    addKeepAliveCache(val: string) {
-      if (val === "/") {
-        return;
-      }
-      if (this.cache_tags.indexOf(val) === -1) {
-        this.cache_tags.push(val);
-        console.log(this.cache_tags);
-      }
-    },
-    // 删除keepalive缓存
-    removeKeepAliveCache(val: string) {
-      let cache = this.cache_tags;
 
-      for (let i = 0; i < cache.length; i++) {
-        if (cache[i] === val) {
-          cache.splice(i, 1);
-        }
-      }
-      this.cache_tags = cache;
-      console.log(this.cache_tags);
-    },
-    // setTranx(val: string) {
-    //     console.log(val)
-    //     this.tranx = val
-    // },
     //关闭菜单
     closeTab(val: stateDataType) {
       this.activePath = val.activePath;

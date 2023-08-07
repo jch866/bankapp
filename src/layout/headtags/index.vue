@@ -3,7 +3,7 @@
     <template v-for="(tag, index) in headTagsStore.tagsList" :key="tag.name">
       <div class="tag_box">
         <el-tag
-          :closable="tag.path != '/'"
+          :closable="tag.path != default_activePath"
           @click.native="changeMenu(tag)"
           @close="closeTag(tag, index)"
           type=""
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
+import { default_activePath } from "@/utils/util";
 import useHeadTagsStore from "@/store/modules/tags";
 const headTagsStore = useHeadTagsStore();
 const $router = useRouter();
@@ -41,14 +42,10 @@ function closeTag(tag: any, index: number) {
       oldTagsList.splice(i, 1);
     }
   }
-  // 删除keepAlive缓存
-  // headTagsStore.removeKeepAliveCache(tag.path)
-  //   if (tag.path !== oldActivePath) {
-  //     return;
-  //   }
+
   if (length === 1) {
     headTagsStore.closeTab({
-      activePath: "/",
+      activePath: default_activePath,
       tagsList: oldTagsList,
       cache_tags: headTagsStore.cache_tags,
     });

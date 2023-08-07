@@ -62,8 +62,7 @@ const headTagsStore = useHeadTagsStore();
 defineProps(["menuList"]);
 const goRoute = (item: RouteRecordRaw) => {
   console.log(item.path);
-  // 加入keepalive缓存
-  headTagsStore.addKeepAliveCache(item.path);
+
   let submenu = {
     path: item.path,
     name: item.meta?.title,

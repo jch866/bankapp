@@ -1,27 +1,27 @@
 export const routes = [
-  {
-    path: "/",
-    component: () => import("@/layout/index.vue"),
-    name: "layout",
-    meta: {
-      title: "主页", //为空，隐藏面包屑
-      hidden: false, // 是否在左侧菜单栏中显示
-      icon: "FullScreen",
-    },
-    redirect: "/home",
-    children: [
-      {
-        path: "/home",
-        component: () => import("@/views/home/index.vue"),
-        name: "home",
-        meta: {
-          title: "主页",
-          hidden: false,
-          icon: "House",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/",
+  //   component: () => import("@/layout/index.vue"),
+  //   name: "layout",
+  //   meta: {
+  //     title: "主页", //为空，隐藏面包屑
+  //     hidden: false, // 是否在左侧菜单栏中显示
+  //     icon: "FullScreen",
+  //   },
+  //   redirect: "/home",
+  //   children: [
+  //     {
+  //       path: "/home",
+  //       component: () => import("@/views/home/index.vue"),
+  //       name: "home",
+  //       meta: {
+  //         title: "主页",
+  //         hidden: false,
+  //         icon: "House",
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
@@ -44,7 +44,7 @@ export const routes = [
     },
   },
   {
-    path: "/task",
+    path: "/",
     component: () => import("@/layout/index.vue"),
     name: "Task",
     meta: {

@@ -19,6 +19,8 @@ export const set_activePath = (path: any) => {
 export const get_activePath = () => {
   return window.sessionStorage.getItem("tags_activePath");
 };
+export const default_activePath = "/task/warning";
+export const default_activeName = "任务预警";
 //封装一个函数:获取一个结果:当前早上|上午|下午|晚上
 export const getTime = () => {
   let message = "";
