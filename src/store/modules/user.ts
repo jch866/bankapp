@@ -1,12 +1,8 @@
 //创建用户相关的小仓库
 import { defineStore } from "pinia";
 //引入接口
-import { reqLogin, reqUserInfo, reqLogout } from "@/api/user";
-import type {
-  loginFormData,
-  loginResponseData,
-  userInfoReponseData,
-} from "@/api/user/type";
+import { reqLogin, reqUserInfo } from "@/api/user";
+import type { loginFormData, loginResponseData } from "@/api/user/type";
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN, DEL_TOKEN } from "@/utils/util";
 import { routes } from "@/router/routes";
@@ -55,11 +51,11 @@ const useUserStore = defineStore("User", {
     //获取用户信息方法
     async userInfo() {
       //获取用户信息进行存储仓库当中[用户头像、名字]
-      const result: userInfoReponseData = await reqUserInfo();
+      const result: any = await reqUserInfo();
       //如果获取用户信息成功，存储一下用户信息
       if (result.code == 200) {
-        this.username = result.data.name;
-        this.avatar = result.data.avatar;
+        this.username = result.data.checkUser.username;
+        this.avatar = result.data.checkUser.avatar;
         return "ok";
       } else {
         return Promise.reject(new Error(result.message));
@@ -67,18 +63,15 @@ const useUserStore = defineStore("User", {
     },
     //退出登录
     async userLogout() {
-      //退出登录请求
-      const result: any = await reqLogout();
-      if (result.code == 200) {
-        //目前没有mock接口:退出登录接口(通知服务器本地用户唯一标识失效)
-        this.token = "";
-        this.username = "";
-        this.avatar = "";
-        DEL_TOKEN();
-        return "ok";
-      } else {
-        return Promise.reject(new Error(result.message));
-      }
+      this.token = "";
+      this.username = "";
+      this.avatar = "";
+      DEL_TOKEN();
+      return "ok";
+      // const result: any = await reqLogout();
+      // if (result.code == 200) {} else {
+      //   return Promise.reject(new Error(result.message));
+      // }
     },
   },
   getters: {},

@@ -58,6 +58,8 @@
 
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
+import * as echarts from "echarts";
+console.log(echarts);
 // interface Isearch{
 //   flow?:'',
 //   node?:'',

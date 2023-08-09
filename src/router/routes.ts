@@ -86,18 +86,18 @@ export const routes = [
     ],
   },
   {
-    path: "/worker",
+    path: "/teller",
     component: () => import("@/layout/index.vue"),
-    name: "worker",
+    name: "Teller",
     meta: {
       title: "集中作业平台参数维护",
       icon: "Goods",
     },
-    redirect: "/worker/config",
+    redirect: "/teller/config",
     children: [
       {
-        path: "/worker/config",
-        component: () => import("@/views/worker/config/index.vue"),
+        path: "/teller/config",
+        component: () => import("@/views/teller/config/index.vue"),
         name: "config",
         meta: {
           title: "人员配置",

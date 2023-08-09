@@ -8,7 +8,7 @@ const request = axios.create({
 });
 request.interceptors.request.use((config) => {
   let userStore = useUserStore();
-  console.log(config);
+  // console.log(config);
   config.headers.token = userStore.token || "";
   return config;
 });

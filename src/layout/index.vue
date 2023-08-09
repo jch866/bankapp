@@ -44,7 +44,6 @@ import HeadTags from "./headtags/index.vue";
 import useUserStore from "@/store/modules/user";
 import useLayOutSettingStore from "@/store/modules/setting";
 const useUser = useUserStore();
-// console.log(useUser.menuRoutes);
 const layOutSettingStore = useLayOutSettingStore();
 const $route = useRoute();
 console.log($route.path);
