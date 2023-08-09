@@ -85,50 +85,42 @@
     header-cell-class-name="table-header-th"
   >
     <el-table-column type="index" width="50" />
-    <el-table-column prop="date" label="交易发起时间" width="180" />
-    <el-table-column prop="name" label="流程结束日期" width="180" />
-    <el-table-column prop="name" label="前端流水号" />
-    <el-table-column prop="name" label="交易码" />
-    <el-table-column prop="address" label="交易名称" />
-    <el-table-column prop="name" label="汇划渠道" />
-    <el-table-column prop="name" label="交易金额" />
-    <el-table-column prop="name" label="流程状态" />
-    <el-table-column prop="name" label="发起机构号" />
-    <el-table-column prop="name" label="发起机构名称" />
-    <el-table-column prop="name" label="发起柜员号" />
-    <el-table-column prop="name" label="发起柜员名称" />
+    <el-table-column
+      prop="instance_startdate"
+      label="交易发起时间"
+      width="180"
+    />
+    <el-table-column prop="instance_enddate" label="流程结束日期" width="180" />
+    <el-table-column prop="trace" label="前端流水号" />
+    <el-table-column prop="txcode" label="交易码" />
+    <el-table-column prop="bpdname" label="交易名称" />
+    <el-table-column prop="allocate_channel" label="汇划渠道" />
+    <el-table-column prop="tx_money" label="交易金额" />
+    <el-table-column prop="instance_status" label="流程状态" />
+    <el-table-column prop="org_number" label="发起机构号" />
+    <el-table-column prop="org_name" label="发起机构名称" />
+    <el-table-column prop="teller_no" label="发起柜员号" />
+    <el-table-column prop="teller_name" label="发起柜员名称" />
   </el-table>
 </template>
 
 <script lang="ts" setup>
 import { reactive, onMounted } from "vue";
+import { getFlowList } from "@/api/flow";
+import { ElMessage } from "element-plus";
 const search = reactive<any>({});
-const Data = [
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189, Grove St",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    address: "No. 189, Grove St",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    address: "No. 189, Grove St",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St",
-  },
-];
-let tableData = reactive<any>(Data);
+let tableData = reactive<any>([]);
 
-function getData() {
-  console.log("getData summary");
+async function getData() {
+  const res = await getFlowList();
+  if (res.code === 200) {
+    tableData.push(...res.data);
+  } else {
+    ElMessage({
+      message: "请求失败",
+      type: "error",
+    });
+  }
 }
 onMounted(() => {
   getData();

@@ -77,3 +77,51 @@ v-show="item.meta.title"  隐藏面包屑信息，比如layout为父路由时
 判断当前是不是全屏模式
 document.fullscreenElement;
 document.documentElement.requestFullscreen() DOM全屏方法
+
+router-view v-slot="{ Component }" keepalive ？  
+编辑添加功能
+MOCK数据
+echarts图表
+ 笔数 = 个人待处理+ 公共待处理 
+
+ref 来定义基本数据类型，使用 reactive 来定义复杂数据类型但是也可以使用 ref 来定义数组 
+ reactive  ref  给表格数据赋值时的问题   reactive包装的无效？？ 有个响应式的问题
+ reactive包装的直接赋值数组，会失去响应式；
+1.
+let arr = reactive([]) 
+   arr.push(...newArr)
+2. 外层嵌套一个对象
+let arr = reactive({list:[]});
+   arr.list = [1,2,3]
+3.
+let arr = ref([])
+arr.value = [1,2,3]
+ reactive  ref 区别说明
+https://blog.csdn.net/qq_58247332/article/details/127259618  
+https://blog.csdn.net/yezi__6/article/details/121004044
+
+
+vite-plugin-mock   多种接口配置方法 get post  patch
+机构类型  表格中没显示，要不要在搜索中删除
+
+defineAsyncComponent 
+<Suspense>
+
+v-bind="obj"   属性一次传一个对象过去
+
+1.props通信 同步直接拿，异步用watch
+2.v-if控制子组件开始挂载的时机
+异步传递属性时 watchEffect(() => {
+  if (props.data?.length!==0) {
+    chartsdata.value = props.data
+  }
+}) 
+
+vue2  获取dom   this.$refs.名字
+vue3  
+1. <div  ref="box"></div>  const box = ref(null)
+2. 通过页面实例拿DOM  测试没通过，没拿到相应DOM
+const pageInstance = getCurrentInstance();
+const targetDom = pageInstance.refs['box']
+
+

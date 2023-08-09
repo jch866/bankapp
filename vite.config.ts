@@ -5,6 +5,7 @@ import { viteMockServe } from "vite-plugin-mock";
 import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
+  // { mode: 'development', command: 'serve', ssrBuild: false }
   //获取各种环境下的对应的变量
   let env = loadEnv(mode, process.cwd());
   return {

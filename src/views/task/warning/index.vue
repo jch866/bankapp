@@ -1,9 +1,10 @@
 <template>
-  <div class="search_box">
+  <div class="search_box" ref="aaa">
     <el-row>
       <el-col :span="6">
+        <!-- todo 机构类型 表格中没展示 -->
         <el-form-item label="机构类型">
-          <el-select v-model="search.region" placeholder="--请选择--">
+          <el-select v-model="search.org" placeholder="--请选择--">
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
@@ -11,13 +12,14 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="节点名称">
-          <el-select v-model="search.node" placeholder="--请选择--">
-            <el-option label="Zone one" value="shanghai" />
+          <el-select v-model="search.stepname" placeholder="--请选择--">
+            <el-option label="Zone one" value="碎片录入" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6">
+        <!-- todo 流程类型 表格中没展示 -->
         <el-form-item label="流程类型">
           <el-select v-model="search.flow" placeholder="--请选择--">
             <el-option label="Zone one" value="shanghai" />
@@ -30,73 +32,62 @@
       </el-col>
     </el-row>
   </div>
-  <div class="echarts_box"></div>
+  <div class="echarts_box">
+    <EchartsView :data="echarts_data" />
+  </div>
   <el-table
     :data="tableData"
     style="width: 100%"
     header-cell-class-name="table-header-th"
   >
     <el-table-column type="index" label="" width="50" align="center" />
-    <el-table-column prop="date" label="节点名称" width="180" />
+    <el-table-column prop="stepname" label="节点名称" width="180" />
     <el-table-column label="红色预警" align="center">
-      <el-table-column prop="state" label="笔数(明细)" width="120" />
-      <el-table-column prop="city" label="个人待处理" width="120" />
-      <el-table-column prop="state" label="公共待处理" width="120" />
+      <el-table-column prop="red_sum" label="笔数(明细)" width="120" />
+      <el-table-column prop="red_personal" label="个人待处理" width="120" />
+      <el-table-column prop="red_public" label="公共待处理" width="120" />
     </el-table-column>
     <el-table-column label="黄色预警" align="center">
-      <el-table-column prop="state" label="笔数(明细)" width="120" />
-      <el-table-column prop="city" label="个人待处理" width="120" />
-      <el-table-column prop="state" label="公共待处理" width="120" />
+      <el-table-column prop="yellow_sum" label="笔数(明细)" width="120" />
+      <el-table-column prop="yellow_personal" label="个人待处理" width="120" />
+      <el-table-column prop="yellow_public" label="公共待处理" width="120" />
     </el-table-column>
     <el-table-column label="正常节点" align="center">
-      <el-table-column prop="state" label="笔数(明细)" width="120" />
-      <el-table-column prop="city" label="个人待处理" width="120" />
-      <el-table-column prop="state" label="公共待处理" width="120" />
+      <el-table-column prop="normal_sum" label="笔数(明细)" width="120" />
+      <el-table-column prop="normal_personal" label="个人待处理" width="120" />
+      <el-table-column prop="normal_public" label="公共待处理" width="120" />
     </el-table-column>
   </el-table>
 </template>
 
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
-import * as echarts from "echarts";
-console.log(echarts);
-// interface Isearch{
-//   flow?:'',
-//   node?:'',
-//   region?:''
-// }
+import EchartsView from "./echartsView.vue";
+import { ElMessage } from "element-plus";
+import { getTaskList } from "@/api/task";
 const search = reactive<any>({});
 let tableData = reactive<any>([]);
+let echarts_data = reactive<any>([]);
 
-function getData() {
-  console.log("getData warning");
+async function getData() {
+  // let obj = {a:1} // 搜索时用 todo
+  const res = await getTaskList(search);
+  if (res.code === 200) {
+    tableData.push(...res.data);
+    echarts_data.push(...res.data);
+  } else {
+    ElMessage({
+      message: "请求失败",
+      type: "error",
+    });
+  }
 }
 onMounted(() => {
   getData();
 });
-function searchHandle() {}
-tableData = [
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    address: "No. 189",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    address: "No. 189",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189",
-  },
-];
+function searchHandle() {
+  getData();
+}
 </script>
 
 <style scoped>

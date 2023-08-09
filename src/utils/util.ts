@@ -38,3 +38,10 @@ export const getTime = () => {
   }
   return message;
 };
+export const filterData = (query: object, data: []) => {
+  if (!query || data.length === 0) {
+    return data;
+  }
+  const keys = Object.keys(query);
+  const values = Object.values(query);
+};

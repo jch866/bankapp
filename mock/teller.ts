@@ -28,7 +28,7 @@ function getList() {
       org_number: 2, //机构号
       org_name: 2, //机构号
       teller_status: 2, //柜员状态
-      telephoe: 238888888, // 柜员电话
+      telephone: 238888888, // 柜员电话
       mobile: 238888888, // 手机号
       sex: 2, // 性别
       en_name: "tom", // 英文名称
@@ -45,7 +45,7 @@ function getList() {
       org_number: 3, //机构号
       org_name: 3, //机构号
       teller_status: 3, //柜员状态
-      telephoe: 338888888, // 柜员电话
+      telephone: 338888888, // 柜员电话
       mobile: 338888888, // 手机号
       sex: 3, // 性别
       en_name: "tom", // 英文名称

@@ -200,10 +200,11 @@ const formLabelWidth = "100px";
 let tableData = ref<any>([]);
 function handleEdit(index: number, row: any) {
   console.log(index);
-  console.log(row);
+  // console.log(row);
   dialogTitle.value = "编辑柜员";
   dialogFormVisible.value = true;
   Object.assign(formData, row);
+  console.log(formData);
 }
 function handleDelete(index: number, row: any) {
   console.log(index);
