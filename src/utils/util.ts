@@ -1,3 +1,5 @@
+import mydataMap from "./datamap";
+console.log(mydataMap);
 export const SET_TOKEN = (token: string) => {
   window.localStorage.setItem("TOKEN", token);
 };
@@ -38,10 +40,4 @@ export const getTime = () => {
   }
   return message;
 };
-export const filterData = (query: object, data: []) => {
-  if (!query || data.length === 0) {
-    return data;
-  }
-  const keys = Object.keys(query);
-  const values = Object.values(query);
-};
+export const datamap = { ...mydataMap };

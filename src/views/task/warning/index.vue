@@ -2,33 +2,56 @@
   <div class="search_box" ref="aaa">
     <el-row>
       <el-col :span="6">
-        <!-- todo 机构类型 表格中没展示 -->
         <el-form-item label="机构类型">
-          <el-select v-model="search.org" placeholder="--请选择--">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+          <el-select
+            v-model="search.org_type"
+            placeholder="--请选择--"
+            clearable
+          >
+            <el-option
+              v-for="(value, key) in orgTypeMap"
+              :key="key"
+              :label="value"
+              :value="key"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="节点名称">
-          <el-select v-model="search.stepname" placeholder="--请选择--">
-            <el-option label="Zone one" value="碎片录入" />
-            <el-option label="Zone two" value="beijing" />
+          <el-select
+            v-model="search.stepname"
+            placeholder="--请选择--"
+            clearable
+          >
+            <el-option
+              v-for="(value, key) in stepNameMap"
+              :key="key"
+              :label="value"
+              :value="value"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6">
-        <!-- todo 流程类型 表格中没展示 -->
         <el-form-item label="流程类型">
-          <el-select v-model="search.flow" placeholder="--请选择--">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+          <el-select
+            v-model="search.flow_type"
+            placeholder="--请选择--"
+            clearable
+          >
+            <el-option
+              v-for="(value, key) in flowTypeMap"
+              :key="key"
+              :label="value"
+              :value="key"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-button @click="searchHandle">查询</el-button>
+        <el-button @click="reset">重置</el-button>
       </el-col>
     </el-row>
   </div>
@@ -61,20 +84,22 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import EchartsView from "./echartsView.vue";
 import { ElMessage } from "element-plus";
 import { getTaskList } from "@/api/task";
+import { datamap } from "@/utils/util";
 const search = reactive<any>({});
-let tableData = reactive<any>([]);
-let echarts_data = reactive<any>([]);
-
+let tableData = ref([]);
+let echarts_data = ref([]);
+const { orgTypeMap, stepNameMap, flowTypeMap } = datamap;
 async function getData() {
   // let obj = {a:1} // 搜索时用 todo
+
   const res = await getTaskList(search);
   if (res.code === 200) {
-    tableData.push(...res.data);
-    echarts_data.push(...res.data);
+    tableData.value = res.data;
+    echarts_data.value = res.data;
   } else {
     ElMessage({
       message: "请求失败",
@@ -86,6 +111,12 @@ onMounted(() => {
   getData();
 });
 function searchHandle() {
+  getData();
+}
+function reset() {
+  search.stepname = "";
+  search.org_type = "";
+  search.flow_type = "";
   getData();
 }
 </script>

@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="柜员号">
-          <el-select v-model="search.region" placeholder="--请选择--">
+          <el-select v-model="search.region" placeholder="--请选择--" clearable>
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
@@ -11,15 +11,20 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="机构号">
-          <el-select v-model="search.node" placeholder="--请选择--">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+          <el-select v-model="search.node" placeholder="--请选择--" clearable>
+            <el-option
+              v-for="(value, key) in orgNoMap"
+              :key="key"
+              :label="value"
+              :value="key"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6"></el-col>
       <el-col :span="6">
         <el-button @click="searchHandle">查询</el-button>
+        <el-button @click="reset">重置</el-button>
         <el-button type="primary" @click="addTeller">新增柜员</el-button>
       </el-col>
     </el-row>
@@ -33,10 +38,19 @@
   >
     <el-table-column prop="teller_no" label="柜员号" width="120" />
     <el-table-column prop="teller_name" label="柜员姓名" width="120" />
-    <el-table-column prop="teller_type_me" label="柜员类型" />
-    <el-table-column prop="org_number" label="机构号" />
+    <el-table-column prop="teller_type" label="柜员类型">
+      <template #default="scope">
+        <span>{{ tellerTypeMap[scope.row.teller_type] }}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column prop="org_number" label="机构号" width="80" />
     <el-table-column prop="org_name" label="机构名称" />
-    <el-table-column prop="teller_status" label="柜员状态" />
+    <el-table-column prop="teller_status" label="柜员状态">
+      <template #default="scope">
+        <span>{{ tellerStatusMap[scope.row.teller_status] }}</span>
+      </template>
+    </el-table-column>
     <el-table-column prop="teller_source_me" label="柜员来源" />
     <el-table-column label="操作" align="center" width="180">
       <template #default="scope">
@@ -47,7 +61,7 @@
           <el-popconfirm
             :title="`确定要删除${scope.row.teller_no}柜员吗?`"
             icon="Delete"
-            @confirm="handleDelete(scope.$index, scope.row)"
+            @confirm="handleDelete(scope.row)"
           >
             <template #reference>
               <el-button size="small" type="danger">删除柜员</el-button>
@@ -55,16 +69,10 @@
           </el-popconfirm>
         </div>
         <div class="operate_btn">
-          <el-button
-            size="small"
-            @click="handleDelete(scope.$index, scope.row)"
-          >
+          <el-button size="small" @click="setRole(scope.$index, scope.row)">
             角色设置
           </el-button>
-          <el-button
-            size="small"
-            @click="handleDelete(scope.$index, scope.row)"
-          >
+          <el-button size="small" @click="handleDelete(scope.row)">
             主岗设置
           </el-button>
         </div>
@@ -136,19 +144,24 @@
               v-model="formData.teller_status"
               placeholder="--请选择--"
             >
-              <el-option label="Zone No.1" value="shanghai" />
-              <el-option label="Zone No.2" value="beijing" />
+              <el-option
+                v-for="(value, key) in tellerStatusMap"
+                :key="key"
+                :label="value"
+                :value="key"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="柜员类型" :label-width="formLabelWidth">
-            <el-select
-              v-model="formData.teller_type_me"
-              placeholder="--请选择--"
-            >
-              <el-option label="Zone No.1" value="shanghai" />
-              <el-option label="Zone No.2" value="beijing" />
+            <el-select v-model="formData.teller_type" placeholder="--请选择--">
+              <el-option
+                v-for="(value, key) in tellerTypeMap"
+                :key="key"
+                :label="value"
+                :value="key"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -180,9 +193,22 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
-          确认
-        </el-button>
+        <el-button type="primary" @click="submitDialogForm">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <el-dialog v-model="roleSetVisible" title="角色设置" :destroy-on-close="true">
+    <el-checkbox-group v-model="checkList">
+      <el-checkbox label="Option A" />
+      <el-checkbox label="Option B" />
+      <el-checkbox label="Option C" />
+      <el-checkbox label="disabled" />
+      <el-checkbox label="selected and disabled" />
+    </el-checkbox-group>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="roleSetVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitRoleSet">确认</el-button>
       </span>
     </template>
   </el-dialog>
@@ -190,14 +216,21 @@
 
 <script lang="ts" setup>
 import { reactive, onMounted, ref } from "vue";
-import { getTellerList } from "@/api/teller";
+import { getTellerList, updateTeller, delTeller } from "@/api/teller";
 import { ElMessage } from "element-plus";
-const search = reactive<any>({});
+import { datamap } from "@/utils/util";
+type Iobj = { [propname: string]: any };
+type Idatamap = { orgNoMap: Iobj; tellerTypeMap: Iobj; tellerStatusMap: Iobj };
+const { orgNoMap, tellerTypeMap, tellerStatusMap }: Idatamap = datamap;
+let search = reactive<any>({});
 const dialogFormVisible = ref<boolean>(false);
+const roleSetVisible = ref<boolean>(false);
 const dialogTitle = ref<string>("新增柜员");
-const formData = reactive<any>({});
+let formData = reactive<any>({});
 const formLabelWidth = "100px";
 let tableData = ref<any>([]);
+
+const checkList = ref(["selected and disabled", "Option A"]);
 function handleEdit(index: number, row: any) {
   console.log(index);
   // console.log(row);
@@ -206,10 +239,37 @@ function handleEdit(index: number, row: any) {
   Object.assign(formData, row);
   console.log(formData);
 }
-function handleDelete(index: number, row: any) {
+async function submitDialogForm() {
+  const res = await updateTeller(formData);
+  if (res.code === 200) {
+    dialogFormVisible.value = false;
+    getData();
+  } else {
+    ElMessage({
+      message: "请求失败",
+      type: "error",
+    });
+  }
+}
+function submitRoleSet() {
+  roleSetVisible.value = false;
+}
+async function handleDelete(row: any) {
+  const res = await delTeller({ id: row.id });
+  if (res.code === 200) {
+    dialogFormVisible.value = false;
+    getData();
+  } else {
+    ElMessage({
+      message: "请求失败",
+      type: "error",
+    });
+  }
+}
+function setRole(index: number, row: any) {
   console.log(index);
   console.log(row);
-  getData();
+  roleSetVisible.value = true;
 }
 function getData() {
   getTellerList().then((res) => {
@@ -229,15 +289,14 @@ onMounted(() => {
 });
 function addTeller() {
   dialogFormVisible.value = true;
-  Object.assign(formData, {});
-  // getData();
+  formData = reactive({});
+  // Object.assign(formData, {});
 }
-// function updateTeller() {
-//   dialogFormVisible.value = true;
-//  Object.assign(formData,row)
-//  留在当前页？
-// }
 function searchHandle() {
+  getData();
+}
+function reset() {
+  search = {};
   getData();
 }
 </script>

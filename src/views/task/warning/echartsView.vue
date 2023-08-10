@@ -1,24 +1,44 @@
 <template>
-  <div class="chartsview" ref="echarRef"></div>
+  <div v-if="flag" class="chartsview" ref="echarRef"></div>
+  <div
+    v-if="!flag"
+    class="chartsview"
+    style="text-align: center; color: #909399"
+  >
+    暂无数据
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, nextTick } from "vue";
 import * as echarts from "echarts";
 
 const props = defineProps(["data"]);
 let echarRef = ref();
-onMounted(() => {
-  console.log(props.data);
-  let mychart = echarts.init(echarRef.value);
-  let option = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
-      },
+let flag = ref(true);
+let mychart: any = null;
+const initChart = (data: any) => {
+  if (mychart) {
+    mychart.dispose();
+  }
+  console.log(data);
+  const emphasisStyle = {
+    itemStyle: {
+      shadowBlur: 10,
+      shadowColor: "rgba(0,0,0,0.3)",
     },
-    legend: {},
+  };
+  const xAxisData = data.map((item: any) => item.stepname);
+  mychart = echarts.init(echarRef.value);
+  let option = {
+    color: ["red", "yellow"],
+    tooltip: {
+      formatter: "{b}<br /> {a}: {c}",
+    },
+    legend: {
+      data: ["红色预警", "黄色预警"],
+      left: "10%",
+    },
     grid: {
       left: "3%",
       right: "4%",
@@ -27,47 +47,48 @@ onMounted(() => {
     },
     xAxis: [
       {
-        type: "category",
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        axisLine: { onZero: true },
+        splitLine: { show: false },
+        splitArea: { show: false },
+        data: [...xAxisData],
       },
     ],
-    yAxis: [
-      {
-        type: "value",
-      },
-    ],
+    yAxis: {},
     series: [
       {
-        name: "Email",
+        name: "红色预警",
         type: "bar",
-        stack: "Ad",
-        emphasis: {
-          focus: "series",
-        },
-        data: [120, 132, 101, 134, 90, 230, 210],
+        stack: "one",
+        emphasis: emphasisStyle,
+        data: [...data.map((item: any) => item.red_sum)],
       },
       {
-        name: "Union Ads",
+        name: "黄色预警",
         type: "bar",
-        stack: "Ad",
-        emphasis: {
-          focus: "series",
-        },
-        data: [220, 182, 191, 234, 290, 330, 310],
-      },
-      {
-        name: "Video Ads",
-        type: "bar",
-        stack: "Ad",
-        emphasis: {
-          focus: "series",
-        },
-        data: [150, 232, 201, 154, 190, 330, 410],
+        stack: "one",
+        emphasis: emphasisStyle,
+        data: [...data.map((item: any) => item.yellow_sum)],
       },
     ],
   };
   //设置配置项
   mychart.setOption(option);
+};
+onMounted(() => {
+  watch(
+    () => props.data,
+    () => {
+      if (props.data.length > 0) {
+        // debugger;
+        flag.value = true;
+        nextTick(() => {
+          initChart(props.data);
+        });
+      } else {
+        flag.value = false;
+      }
+    },
+  );
 });
 </script>
 <script lang="ts">

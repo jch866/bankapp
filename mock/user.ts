@@ -3,7 +3,7 @@ function getList() {
     {
       teller_no: 1, //柜员号
       teller_name: 1, //柜员名称
-      teller_type_me: 1, //柜员类型  mydefined
+      teller_type: 1, //柜员类型  mydefined
       teller_source_me: 1, //柜员来源 mydefined
       org_number: 1, //机构号
       org_name: 1, //机构号
@@ -18,7 +18,7 @@ function getList() {
     {
       teller_no: 2, //柜员号
       teller_name: 2, //柜员名称
-      teller_type_me: 2, //柜员类型  mydefined
+      teller_type: 2, //柜员类型  mydefined
       teller_source_me: 2, //柜员来源 mydefined
       org_number: 2, //机构号
       org_name: 2, //机构号
@@ -33,7 +33,7 @@ function getList() {
     {
       teller_no: 3, //柜员号
       teller_name: 3, //柜员名称
-      teller_type_me: 3, //柜员类型  mydefined
+      teller_type: 3, //柜员类型  mydefined
       teller_source_me: 3, //柜员来源 mydefined
       org_number: 3, //机构号
       org_name: 3, //机构号
