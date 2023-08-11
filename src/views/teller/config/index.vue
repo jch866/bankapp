@@ -69,10 +69,10 @@
           </el-popconfirm>
         </div>
         <div class="operate_btn">
-          <el-button size="small" @click="setRole(scope.$index, scope.row)">
+          <el-button size="small" @click="setRole(scope.row)">
             角色设置
           </el-button>
-          <el-button size="small" @click="handleDelete(scope.row)">
+          <el-button size="small" @click="setRole(scope.row)">
             主岗设置
           </el-button>
         </div>
@@ -197,14 +197,53 @@
       </span>
     </template>
   </el-dialog>
-  <el-dialog v-model="roleSetVisible" title="角色设置" :destroy-on-close="true">
-    <el-checkbox-group v-model="checkList">
-      <el-checkbox label="Option A" />
-      <el-checkbox label="Option B" />
-      <el-checkbox label="Option C" />
-      <el-checkbox label="disabled" />
-      <el-checkbox label="selected and disabled" />
-    </el-checkbox-group>
+  <el-dialog
+    v-model="roleSetVisible"
+    :title="roleSetTitle"
+    :destroy-on-close="true"
+  >
+    <div class="role_box">
+      <div class="role_left">
+        <ul>
+          <li class="role_left_li">
+            <span class="role_check_span"></span>
+            <span class="role_number_span">角色编号</span>
+            <span class="role_name_span">角色名称</span>
+          </li>
+          <li
+            v-for="item in roleList"
+            :key="item.role_number"
+            class="role_left_li"
+          >
+            <span class="role_check_span">
+              <el-checkbox
+                v-model="item.isChecked"
+                @change="roleCheckeHandler"
+              />
+            </span>
+            <span class="role_number_span">{{ item.role_number }}</span>
+            <span class="role_name_span">{{ item.role_name }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="role_right">
+        <p class="primary_title">主岗设置</p>
+        <el-select
+          v-model="primaryRole"
+          @change="primaryRoleChange"
+          placeholder="--请选择--"
+          clearable
+          filterable
+        >
+          <el-option
+            v-for="item in roleList_checked"
+            :key="item.role_number"
+            :value="item.role_number"
+            :label="`${item.role_number} ${item.role_name}`"
+          ></el-option>
+        </el-select>
+      </div>
+    </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="roleSetVisible = false">取消</el-button>
@@ -216,7 +255,13 @@
 
 <script lang="ts" setup>
 import { reactive, onMounted, ref } from "vue";
-import { getTellerList, updateTeller, delTeller } from "@/api/teller";
+import {
+  getTellerList,
+  updateTeller,
+  delTeller,
+  getRoleList,
+  updateRole,
+} from "@/api/teller";
 import { ElMessage } from "element-plus";
 import { datamap } from "@/utils/util";
 type Iobj = { [propname: string]: any };
@@ -225,12 +270,15 @@ const { orgNoMap, tellerTypeMap, tellerStatusMap }: Idatamap = datamap;
 let search = reactive<any>({});
 const dialogFormVisible = ref<boolean>(false);
 const roleSetVisible = ref<boolean>(false);
+const roleSetTitle = ref("");
 const dialogTitle = ref<string>("新增柜员");
 let formData = reactive<any>({});
 const formLabelWidth = "100px";
 let tableData = ref<any>([]);
-
-const checkList = ref(["selected and disabled", "Option A"]);
+let roleList = ref<any>([]);
+let roleList_checked = ref<any>([]);
+let primaryRole = ref("");
+// const checkList = ref(["selected and disabled", "Option A"]);
 function handleEdit(index: number, row: any) {
   console.log(index);
   // console.log(row);
@@ -239,6 +287,7 @@ function handleEdit(index: number, row: any) {
   Object.assign(formData, row);
   console.log(formData);
 }
+
 async function submitDialogForm() {
   const res = await updateTeller(formData);
   if (res.code === 200) {
@@ -252,7 +301,26 @@ async function submitDialogForm() {
   }
 }
 function submitRoleSet() {
+  console.log(roleList.value);
+  // let list = roleList.value.filter((item:any)=>item.isChecked);
+  const params = { list: roleList.value };
+  if (primaryRole.value === "") {
+    ElMessage({
+      message: "请选择主岗",
+      type: "error",
+    });
+    return;
+  }
+  updateRole(params);
+
   roleSetVisible.value = false;
+}
+function primaryRoleChange(value: string) {
+  console.log(value);
+  roleList.value = roleList.value.map((item: any) => {
+    item.isMainRole = !!(item.role_number === value);
+    return item;
+  });
 }
 async function handleDelete(row: any) {
   const res = await delTeller({ id: row.id });
@@ -266,12 +334,17 @@ async function handleDelete(row: any) {
     });
   }
 }
-function setRole(index: number, row: any) {
-  console.log(index);
-  console.log(row);
+function setRole(row: any) {
   roleSetVisible.value = true;
+  roleSetTitle.value = `角色设置(${row.user_account || "未知"})`;
 }
-function getData() {
+function roleCheckeHandler() {
+  const filterData = roleList.value.filter((obj: any) => obj.isChecked);
+  roleList_checked.value = filterData;
+  primaryRole.value = "";
+}
+
+const getData = () => {
   getTellerList().then((res) => {
     if (res.code === 200) {
       tableData.value = res.data;
@@ -282,11 +355,28 @@ function getData() {
       });
     }
   });
-  console.log("getData config");
-}
+};
+const getRoleData = () => {
+  getRoleList().then((res) => {
+    if (res.code === 200) {
+      roleList.value = res.data;
+      roleCheckeHandler();
+    } else {
+      ElMessage({
+        message: "请求失败",
+        type: "error",
+      });
+    }
+  });
+};
 onMounted(() => {
   getData();
+  getRoleData();
 });
+// function handleSelectionChange(value:any){
+//   roleList_checked.value = value;
+//   // console.log(value)
+// }
 function addTeller() {
   dialogFormVisible.value = true;
   formData = reactive({});
@@ -301,7 +391,7 @@ function reset() {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 :deep(.cell) {
   text-align: center;
   padding: 0 4px;
@@ -311,5 +401,39 @@ function reset() {
   display: flex;
   justify-content: center;
   padding: 2px 0;
+}
+.role_box {
+  display: flex;
+  .role_left {
+    width: 50%;
+    border-right: 1px solid #cbcbcb;
+    padding: 0 20px;
+    margin-right: 20px;
+    > ul {
+      height: 350px;
+      overflow: auto;
+    }
+    & .role_left_li {
+      display: flex;
+      border-bottom: 1px solid #f1f1f1;
+      align-items: center;
+      line-height: 25px;
+      & .role_check_span {
+        width: 50px;
+      }
+      & .role_number_span {
+        width: 80px;
+      }
+      & .role_name_span {
+        flex: 1;
+      }
+    }
+  }
+  .role_right {
+    width: 50%;
+    & .primary_title {
+      line-height: 35px;
+    }
+  }
 }
 </style>

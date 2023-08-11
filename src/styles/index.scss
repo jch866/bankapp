@@ -5,13 +5,13 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: $base-menu-background;
+    background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-    width: 10px;
-    background-color: rgb(229, 248, 215);
-    border-radius: 10px;
+    width: 5px;
+    background-color: #cbcbcb;
+    border-radius: 5px;
 }
 .table-header-th{
     color: $base-menu-background;

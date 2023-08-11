@@ -16,6 +16,7 @@ const list = [
     teller_level: 1, //柜员级别
     workdate: "2000-01-01", //工作日期
     remark: "hello world",
+    user_account: "000238",
   },
   {
     id: 2,
@@ -33,6 +34,7 @@ const list = [
     teller_level: 2, //柜员级别
     workdate: "2000-01-01", //工作日期
     remark: "hello world",
+    user_account: "000235",
   },
   {
     id: 3,
@@ -50,17 +52,101 @@ const list = [
     teller_level: 3, //柜员级别
     workdate: "2000-01-01", //工作日期
     remark: "hello world",
+    user_account: "000236",
+  },
+];
+let roles = [
+  {
+    id: 1,
+    role_number: "001", //业务角色编号
+    role_name: "省中心管理员", //角色名称
+    user_account: "000238",
+    isChecked: false, // 是否勾选
+    isMainRole: false, // 是否主岗
+  },
+  {
+    id: 2,
+    role_number: "002",
+    role_name: "省中心操作员",
+    user_account: "000238",
+    isChecked: false, // 是否勾选
+    isMainRole: false, // 是否主岗
+  },
+  {
+    id: 3,
+    role_number: "004",
+    role_name: "任务调试岗",
+    user_account: "000238",
+    isChecked: false, // 是否勾选
+    isMainRole: false, // 是否主岗
+  },
+  {
+    id: 4,
+    role_number: "005",
+    role_name: "集中作业中心监控",
+    user_account: "000238",
+    isChecked: false, // 是否勾选
+    isMainRole: false, // 是否主岗
+  },
+  {
+    id: 5,
+    role_number: "JS01",
+    role_name: "全单录入岗",
+    user_account: "000238",
+    isChecked: false,
+  },
+  {
+    id: 6,
+    role_number: "JS02",
+    role_name: "录入复核员",
+    user_account: "000238",
+    isChecked: false,
+  },
+  {
+    id: 7,
+    role_number: "JS03",
+    role_name: "存款审核员",
+    user_account: "000238",
+    isChecked: false,
+  },
+  {
+    id: 8,
+    role_number: "JS07",
+    role_name: "异常处理岗",
+    user_account: "000238",
+    isChecked: true, // 是否勾选
+    isMainRole: false, // 是否主岗
   },
 ];
 const getList = () => list;
-
+const getRoles = () => roles;
 export const tellerMock = [
   {
-    url: "/api/tellerlist", //列表请求地址
+    url: "/api/teller/list", //列表请求地址
     method: "get",
     response: () => {
       const data = getList();
       return { code: 200, data, message: "请求成功" };
+    },
+  },
+  {
+    url: "/api/teller/roles", // 获取角色列表
+    method: "get",
+    response: () => {
+      const data = getRoles();
+      return { code: 200, data, message: "请求成功" };
+    },
+  },
+  {
+    url: "/api/teller/rolesupdate", // 角色设置
+    method: "post",
+    response: (data) => {
+      // data.body => {data:[全量数据]}
+      let { list } = data.body;
+      roles = list;
+      // let notCheckedList = roles.filter(item=>!item.isChecked);
+      // let newlist = [...notCheckedList,...list].sort((a,b)=>a-b)
+      return { code: 200, data: list, message: "请求成功" };
     },
   },
   {
@@ -76,19 +162,6 @@ export const tellerMock = [
     url: "/api/teller/update", //更新 添加
     method: "post",
     response: (data) => {
-      // console.log(data.body)
-      // {
-      //   teller_no: '123',
-      //   teller_name: '123',
-      //   telephone: '123',
-      //   mobile: '123',
-      //   en_name: '123',
-      //   sex: 1,
-      //   teller_level: '123',
-      //   org_number: '123',
-      //   teller_status: 'shanghai',
-      //   teller_type: 'shanghai'
-      // },
       if (data.body.id) {
         //编辑
         let index = list.findIndex((item) => item.id === data.body.id);
