@@ -46,7 +46,7 @@ import useLayOutSettingStore from "@/store/modules/setting";
 const useUser = useUserStore();
 const layOutSettingStore = useLayOutSettingStore();
 const $route = useRoute();
-console.log($route.path);
+// console.log($route.path);
 </script>
 <script lang="ts">
 export default {

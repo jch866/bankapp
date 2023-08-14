@@ -11,6 +11,7 @@ export const getTellerList = () => request.get<any, any>(API.getList);
 export const updateTeller = (data: any) =>
   request.post<any, any>(API.update, data);
 export const delTeller = (data: any) => request.post<any, any>(API.del, data);
-export const getRoleList = () => request.get<any, any>(API.role);
+export const getRoleList = (user_account: string) =>
+  request.get<any, any>(API.role, { params: { user_account } });
 export const updateRole = (data: any) =>
   request.post<any, any>(API.updateRole, data);

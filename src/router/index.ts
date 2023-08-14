@@ -20,7 +20,7 @@ const router = createRouter({
 const userStore = useUserStore(pinia);
 router.beforeEach(async (to, from, next) => {
   NProgress.start(); //开启进度条
-  document.title = `武汉农商行 - ${to.meta.title}`;
+  // document.title = `武汉农商行 - ${to.meta.title}`;
   const LOGINPATH = "/login";
   //获取token,去判断用户登录、还是未登录
   const token = userStore.token;

@@ -76,7 +76,7 @@ let roles = [
     id: 3,
     role_number: "004",
     role_name: "任务调试岗",
-    user_account: "000238",
+    user_account: "000235",
     isChecked: false, // 是否勾选
     isMainRole: false, // 是否主岗
   },
@@ -92,7 +92,7 @@ let roles = [
     id: 5,
     role_number: "JS01",
     role_name: "全单录入岗",
-    user_account: "000238",
+    user_account: "000235",
     isChecked: false,
   },
   {
@@ -106,7 +106,7 @@ let roles = [
     id: 7,
     role_number: "JS03",
     role_name: "存款审核员",
-    user_account: "000238",
+    user_account: "000235",
     isChecked: false,
   },
   {
@@ -114,6 +114,22 @@ let roles = [
     role_number: "JS07",
     role_name: "异常处理岗",
     user_account: "000238",
+    isChecked: true, // 是否勾选
+    isMainRole: true, // 是否主岗
+  },
+  {
+    id: 9,
+    role_number: "JS09",
+    role_name: "异常处理岗6",
+    user_account: "000236",
+    isChecked: false, // 是否勾选
+    isMainRole: false, // 是否主岗
+  },
+  {
+    id: 10,
+    role_number: "JS17",
+    role_name: "异常处理6",
+    user_account: "000236",
     isChecked: true, // 是否勾选
     isMainRole: false, // 是否主岗
   },
@@ -132,9 +148,13 @@ export const tellerMock = [
   {
     url: "/api/teller/roles", // 获取角色列表
     method: "get",
-    response: () => {
+    response: ({ query }) => {
       const data = getRoles();
-      return { code: 200, data, message: "请求成功" };
+      const { user_account } = query;
+      const newData = data.filter(
+        (item: any) => item.user_account === user_account,
+      );
+      return { code: 200, data: newData, message: "请求成功" };
     },
   },
   {
@@ -143,9 +163,10 @@ export const tellerMock = [
     response: (data) => {
       // data.body => {data:[全量数据]}
       let { list } = data.body;
-      roles = list;
-      // let notCheckedList = roles.filter(item=>!item.isChecked);
-      // let newlist = [...notCheckedList,...list].sort((a,b)=>a-b)
+      let no = list[0].user_account;
+      const data1 = getRoles();
+      let array = data1.filter((item) => item.user_account !== no);
+      roles = [...array, ...list];
       return { code: 200, data: list, message: "请求成功" };
     },
   },
