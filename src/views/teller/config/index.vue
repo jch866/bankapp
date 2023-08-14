@@ -63,7 +63,7 @@
     <el-table-column label="操作" align="center" width="220">
       <template #default="scope">
         <div class="operate_btn">
-          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
+          <el-button size="small" @click="editTeller(scope.$index, scope.row)">
             维护柜员
           </el-button>
           <el-button size="small" @click="setRole(scope.row)">
@@ -90,175 +90,61 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog
-    v-model="dialogFormVisible"
+  <Pagination :pageObj="pageObj" @pageChange="getData" />
+  <TellEdit
+    :isShow="dialogFormVisible"
+    :data="currentEditRow"
     :title="dialogTitle"
-    :destroy-on-close="true"
-  >
-    <el-form :model="formData">
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <el-form-item label="柜员号" :label-width="formLabelWidth">
-            <el-input v-model="formData.teller_no" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="柜员名称" :label-width="formLabelWidth">
-            <el-input v-model="formData.teller_name" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <el-form-item label="柜员电话" :label-width="formLabelWidth">
-            <el-input v-model="formData.telephone" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="手机号" :label-width="formLabelWidth">
-            <el-input v-model="formData.mobile" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <el-form-item label="英文名称" :label-width="formLabelWidth">
-            <el-input v-model="formData.en_name" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="性别" :label-width="formLabelWidth">
-            <el-select v-model="formData.sex" placeholder="--请选择--">
-              <el-option label="男" :value="1" />
-              <el-option label="女" :value="2" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <el-form-item label="柜员级别" :label-width="formLabelWidth">
-            <el-input v-model="formData.teller_level" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="机构号" :label-width="formLabelWidth">
-            <el-input v-model="formData.org_number" autocomplete="off" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <el-form-item label="柜员状态" :label-width="formLabelWidth">
-            <el-select
-              v-model="formData.teller_status"
-              placeholder="--请选择--"
-            >
-              <el-option
-                v-for="(value, key) in tellerStatusMap"
-                :key="key"
-                :label="value"
-                :value="key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="柜员类型" :label-width="formLabelWidth">
-            <el-select v-model="formData.teller_type" placeholder="--请选择--">
-              <el-option
-                v-for="(value, key) in tellerTypeMap"
-                :key="key"
-                :label="value"
-                :value="key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <el-form-item label="工作日期" :label-width="formLabelWidth">
-            <el-date-picker
-              v-model="formData.workdate"
-              type="datetime"
-              placeholder="请选择日期"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="备注" :label-width="formLabelWidth">
-            <el-input
-              v-model="formData.remark"
-              :rows="2"
-              type="textarea"
-              placeholder="Please input"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitDialogForm">确认</el-button>
-      </span>
-    </template>
-  </el-dialog>
+    @closeTellerEdit="closeTellerHandler"
+  />
   <RoleSet
     :data="currentRow"
     :isShow="roleSetVisible"
-    @closeRoleset="setIsShow"
+    @closeRoleset="closeRoleHandler"
     :title="roleSetTitle"
   />
 </template>
 
 <script lang="ts" setup>
 import { reactive, onMounted, ref } from "vue";
-import { getTellerList, updateTeller, delTeller } from "@/api/teller";
+import { getTellerList, delTeller } from "@/api/teller";
 import { ElMessage } from "element-plus";
 import { datamap } from "@/utils/util";
 import RoleSet from "./roleSet.vue";
+import TellEdit from "./tellerEdit.vue";
 type Iobj = { [propname: string]: any };
 type Idatamap = { orgNoMap: Iobj; tellerTypeMap: Iobj; tellerStatusMap: Iobj };
 const { orgNoMap, tellerTypeMap, tellerStatusMap }: Idatamap = datamap;
 let search = ref<any>({});
 const dialogFormVisible = ref<boolean>(false);
+const dialogTitle = ref<string>("新增柜员");
 let roleSetVisible = ref<boolean>(false);
 const roleSetTitle = ref("");
-const dialogTitle = ref<string>("新增柜员");
-let formData = reactive<any>({});
-const formLabelWidth = "100px";
 let tableData = ref<any>([]);
 let currentRow = ref({});
-function setIsShow() {
-  console.log(1111);
+let currentEditRow = ref({});
+let pageObj = ref({ page: 1, pageSize: 1, showTotal: true, total: 0 });
+function closeRoleHandler() {
   roleSetVisible.value = false;
 }
-function handleEdit(index: number, row: any) {
+function addTeller() {
+  dialogFormVisible.value = true;
+  dialogTitle.value = "新增柜员";
+  currentEditRow.value = {};
+}
+function editTeller(index: number, row: any) {
   console.log(index);
   dialogTitle.value = "编辑柜员";
+  currentEditRow.value = row;
   dialogFormVisible.value = true;
-  Object.assign(formData, row);
-  console.log(formData);
 }
 
-async function submitDialogForm() {
-  const res = await updateTeller(formData);
-  if (res.code === 200) {
-    dialogFormVisible.value = false;
-    getData();
-  } else {
-    ElMessage({
-      message: "请求失败",
-      type: "error",
-    });
-  }
-}
-
+const closeTellerHandler = (flag: boolean) => {
+  //关闭弹窗  正常关闭不刷新表格数据 反之刷新
+  dialogFormVisible.value = false;
+  currentEditRow.value = {};
+  flag && getData();
+};
 async function handleDelete(row: any) {
   const res = await delTeller({ id: row.id });
   if (res.code === 200) {
@@ -277,9 +163,13 @@ function setRole(row: any) {
   roleSetTitle.value = `角色设置(${row.user_account || "未知"})`;
 }
 const getData = () => {
-  getTellerList().then((res) => {
+  const { page, pageSize } = pageObj.value;
+  // const params = {page,pageSize}
+  const params = Object.assign(search.value, { page, pageSize });
+  getTellerList(params).then((res) => {
     if (res.code === 200) {
       tableData.value = res.data;
+      pageObj.value.total = res.data.length;
     } else {
       ElMessage({
         message: "请求失败",
@@ -292,10 +182,6 @@ onMounted(() => {
   getData();
 });
 
-function addTeller() {
-  dialogFormVisible.value = true;
-  formData = reactive({});
-}
 function searchHandle() {
   getData();
 }

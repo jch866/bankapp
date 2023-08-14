@@ -4,7 +4,7 @@
       <el-col :span="6">
         <el-form-item label="起始日期">
           <el-date-picker
-            v-model="search.startTime"
+            v-model="search.instance_startdate"
             type="datetime"
             placeholder="请选择日期"
             format="YYYY-MM-DD HH:mm"
@@ -15,7 +15,7 @@
       <el-col :span="6">
         <el-form-item label="终止日期">
           <el-date-picker
-            v-model="search.endTime"
+            v-model="search.instance_enddate"
             type="datetime"
             placeholder="请选择日期"
             format="YYYY-MM-DD HH:mm"
@@ -25,17 +25,33 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="机构类型">
-          <el-select v-model="search.node" placeholder="--请选择--">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+          <el-select
+            v-model="search.org_type"
+            placeholder="--请选择--"
+            clearable
+          >
+            <el-option
+              v-for="(value, key) in orgTypeMap"
+              :key="key"
+              :label="value"
+              :value="key"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="机构号/名称">
-          <el-select v-model="search.region" placeholder="--请选择--">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+          <el-select
+            v-model="search.org_number"
+            placeholder="--请选择--"
+            clearable
+          >
+            <el-option
+              v-for="(value, key) in orgNoMap"
+              :key="key"
+              :label="value"
+              :value="key"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-col>
@@ -43,7 +59,7 @@
     <el-row>
       <el-col :span="6">
         <el-form-item label="交易码/名称">
-          <el-select v-model="search.node" placeholder="--请选择--">
+          <el-select v-model="search.txcode" placeholder="--请选择--">
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
@@ -51,7 +67,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="流程状态">
-          <el-select v-model="search.node" placeholder="--请选择--">
+          <el-select v-model="search.instance_status" placeholder="--请选择--">
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
@@ -59,12 +75,12 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="发起柜员号">
-          <el-input v-model="search.name" />
+          <el-input v-model="search.teller_no" />
         </el-form-item>
       </el-col>
       <el-col :span="6">
         <el-form-item label="前端流水号">
-          <el-input v-model="search.name" />
+          <el-input v-model="search.trace" />
         </el-form-item>
       </el-col>
     </el-row>
@@ -108,6 +124,16 @@
 import { reactive, onMounted } from "vue";
 import { getFlowList } from "@/api/flow";
 import { ElMessage } from "element-plus";
+import { datamap } from "@/utils/util";
+type Iobj = { [propname: string]: any };
+type Idatamap = {
+  orgNoMap: Iobj;
+  tellerTypeMap: Iobj;
+  tellerStatusMap: Iobj;
+  orgTypeMap: Iobj;
+};
+const { orgNoMap, orgTypeMap, tellerTypeMap, tellerStatusMap }: Idatamap =
+  datamap;
 const search = reactive<any>({});
 let tableData = reactive<any>([]);
 

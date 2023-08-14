@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="props.isShow"
-    :title="roleSetTitle"
+    :title="props.title"
     :destroy-on-close="true"
     @close="closeHandler"
   >
@@ -60,14 +60,11 @@
 import { onMounted, ref, watch } from "vue";
 import { getRoleList, updateRole } from "@/api/teller";
 import { ElMessage } from "element-plus";
-const props = defineProps(["data", "isShow"]);
+const props = defineProps(["data", "isShow", "title"]);
 const emits = defineEmits(["closeRoleset"]);
-// const roleSetVisible = ref<boolean>(false);
-const roleSetTitle = ref("");
 let roleList = ref<any>([]);
 let roleList_checked = ref<any>([]);
 let primaryRole = ref("");
-// let user_account = ref<string>("");
 watch(
   () => props.isShow,
   (value) => {
@@ -97,9 +94,7 @@ const closeHandler = () => {
   primaryRole.value = "";
   emits("closeRoleset");
 };
-// onMounted(()=>{
-//   // getRoleData(props.data.user_account)
-// })
+
 async function submitRoleSet() {
   console.log(roleList.value);
   // let list = roleList.value.filter((item:any)=>item.isChecked);
@@ -115,6 +110,10 @@ async function submitRoleSet() {
   // roleSetVisible.value = false;
   if (res.code == 200) {
     emits("closeRoleset");
+    ElMessage({
+      message: "设置成功",
+      type: "success",
+    });
   } else {
     ElMessage({
       message: "设置失败",

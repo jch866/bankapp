@@ -7,7 +7,8 @@ const API = {
   updateRole: "/api/teller/rolesupdate",
 };
 
-export const getTellerList = () => request.get<any, any>(API.getList);
+export const getTellerList = (data: any) =>
+  request.get<any, any>(API.getList, { params: data });
 export const updateTeller = (data: any) =>
   request.post<any, any>(API.update, data);
 export const delTeller = (data: any) => request.post<any, any>(API.del, data);

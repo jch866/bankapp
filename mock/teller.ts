@@ -140,9 +140,14 @@ export const tellerMock = [
   {
     url: "/api/teller/list", //列表请求地址
     method: "get",
-    response: () => {
-      const data = getList();
-      return { code: 200, data, message: "请求成功" };
+    response: ({ query }) => {
+      let data = getList();
+      const { page, pageSize, teller_no, org_number } = query;
+      //todo
+      if (org_number) {
+        data = data.filter((item) => item.org_number === org_number);
+      }
+      return { code: 200, data, total: data.length, message: "请求成功" };
     },
   },
   {
