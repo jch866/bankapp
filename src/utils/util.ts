@@ -41,3 +41,30 @@ export const getTime = () => {
   return message;
 };
 export const datamap = { ...mydataMap };
+
+export function clearEmptyPro(obj: any) {
+  let curVal: { [propname: string]: any } = {};
+  let toString = Object.prototype.toString;
+  for (let key in obj) {
+    let value = obj[key];
+    let type = toString.call(value);
+    if (value || type === "[object Number]" || type === "[object Boolean]") {
+      switch (type) {
+        case "[object Object]":
+          if (Object.keys(value).length > 0) {
+            curVal[key] = value;
+          }
+          break;
+        case "[object Array]":
+          if (value.length > 0) {
+            curVal[key] = value;
+          }
+          break;
+        default:
+          curVal[key] = value;
+          break;
+      }
+    }
+  }
+  return curVal;
+}

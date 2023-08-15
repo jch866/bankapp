@@ -94,8 +94,6 @@ let tableData = ref([]);
 let echarts_data = ref([]);
 const { orgTypeMap, stepNameMap, flowTypeMap } = datamap;
 async function getData() {
-  // let obj = {a:1} // 搜索时用 todo
-
   const res = await getTaskList(search);
   if (res.code === 200) {
     tableData.value = res.data;

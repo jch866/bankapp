@@ -109,7 +109,7 @@
 import { reactive, onMounted, ref } from "vue";
 import { getTellerList, delTeller } from "@/api/teller";
 import { ElMessage } from "element-plus";
-import { datamap } from "@/utils/util";
+import { datamap, clearEmptyPro } from "@/utils/util";
 import RoleSet from "./roleSet.vue";
 import TellEdit from "./tellerEdit.vue";
 type Iobj = { [propname: string]: any };
@@ -123,7 +123,7 @@ const roleSetTitle = ref("");
 let tableData = ref<any>([]);
 let currentRow = ref({});
 let currentEditRow = ref({});
-let pageObj = ref({ page: 1, pageSize: 1, showTotal: true, total: 0 });
+let pageObj = ref({ page: 1, pageSize: 2, showTotal: true, total: 0 });
 function closeRoleHandler() {
   roleSetVisible.value = false;
 }
@@ -165,11 +165,14 @@ function setRole(row: any) {
 const getData = () => {
   const { page, pageSize } = pageObj.value;
   // const params = {page,pageSize}
-  const params = Object.assign(search.value, { page, pageSize });
+
+  let newsearch = clearEmptyPro(search.value);
+  console.log(newsearch);
+  const params = Object.assign(newsearch, { page, pageSize });
   getTellerList(params).then((res) => {
     if (res.code === 200) {
       tableData.value = res.data;
-      pageObj.value.total = res.data.length;
+      pageObj.value.total = res.total;
     } else {
       ElMessage({
         message: "请求失败",
@@ -186,7 +189,8 @@ function searchHandle() {
   getData();
 }
 function reset() {
-  search.value = ref({});
+  search.value.teller_no = "";
+  search.value.org_number = "";
   getData();
 }
 </script>

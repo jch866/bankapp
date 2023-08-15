@@ -1,3 +1,5 @@
+import { getTableData } from "./tool";
+
 //  mydefined 代表自定义的
 const list = [
   {
@@ -142,12 +144,17 @@ export const tellerMock = [
     method: "get",
     response: ({ query }) => {
       let data = getList();
+
       const { page, pageSize, teller_no, org_number } = query;
-      //todo
       if (org_number) {
         data = data.filter((item) => item.org_number === org_number);
       }
-      return { code: 200, data, total: data.length, message: "请求成功" };
+      if (teller_no) {
+        data = data.filter((item) => item.teller_no === teller_no);
+      }
+      let total = data.length;
+      let newdata = getTableData(page, pageSize, data);
+      return { code: 200, data: newdata, total, message: "请求成功" };
     },
   },
   {
