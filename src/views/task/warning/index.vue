@@ -84,17 +84,23 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted, ref } from "vue";
+import { reactive, onMounted, ref, onBeforeUnmount } from "vue";
 import EchartsView from "./echartsView.vue";
 import { ElMessage } from "element-plus";
 import { getTaskList } from "@/api/task";
-import { datamap } from "@/utils/util";
+import { datamap, clearEmptyPro } from "@/utils/util";
 const search = reactive<any>({});
 let tableData = ref([]);
 let echarts_data = ref([]);
+let seconds = 10000;
+let timer: any = null;
 const { orgTypeMap, stepNameMap, flowTypeMap } = datamap;
 async function getData() {
-  const res = await getTaskList(search);
+  let newsearch = clearEmptyPro(search);
+  if (Object.entries(newsearch).length > 0 && timer) {
+    clearInterval(timer);
+  }
+  const res = await getTaskList(newsearch);
   if (res.code === 200) {
     tableData.value = res.data;
     echarts_data.value = res.data;
@@ -107,8 +113,12 @@ async function getData() {
 }
 onMounted(() => {
   getData();
+  timer = setInterval(() => {
+    getData();
+  }, seconds);
 });
 function searchHandle() {
+  clearInterval(timer);
   getData();
 }
 function reset() {
@@ -116,7 +126,13 @@ function reset() {
   search.org_type = "";
   search.flow_type = "";
   getData();
+  timer = setInterval(() => {
+    getData();
+  }, seconds);
 }
+onBeforeUnmount(() => {
+  clearInterval(timer);
+});
 </script>
 
 <style scoped>

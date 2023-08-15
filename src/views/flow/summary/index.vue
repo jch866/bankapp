@@ -148,7 +148,7 @@ import { reactive, onMounted, ref } from "vue";
 import { getFlowList } from "@/api/flow";
 import { ElMessage } from "element-plus";
 import { datamap, clearEmptyPro } from "@/utils/util";
-let pageObj = ref({ page: 1, pageSize: 2, showTotal: true, total: 0 });
+let pageObj = ref({ page: 1, pageSize: 10, showTotal: true, total: 0 });
 type Iobj = { [propname: string]: any };
 type Idatamap = {
   orgNoMap: Iobj;

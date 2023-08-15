@@ -123,7 +123,7 @@ const roleSetTitle = ref("");
 let tableData = ref<any>([]);
 let currentRow = ref({});
 let currentEditRow = ref({});
-let pageObj = ref({ page: 1, pageSize: 2, showTotal: true, total: 0 });
+let pageObj = ref({ page: 1, pageSize: 10, showTotal: true, total: 0 });
 function closeRoleHandler() {
   roleSetVisible.value = false;
 }
