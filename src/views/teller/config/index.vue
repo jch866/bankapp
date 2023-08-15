@@ -43,6 +43,7 @@
     style="width: 100%"
     header-cell-class-name="table-header-th"
     cell-class-name="allcell"
+    v-loading="tableDataLoading"
   >
     <el-table-column prop="teller_no" label="柜员号" width="80" />
     <el-table-column prop="teller_name" label="柜员姓名" width="80" />
@@ -123,6 +124,8 @@ const roleSetTitle = ref("");
 let tableData = ref<any>([]);
 let currentRow = ref({});
 let currentEditRow = ref({});
+let tableDataLoading = ref<boolean>(false);
+
 let pageObj = ref({ page: 1, pageSize: 10, showTotal: true, total: 0 });
 function closeRoleHandler() {
   roleSetVisible.value = false;
@@ -169,7 +172,9 @@ const getData = () => {
   let newsearch = clearEmptyPro(search.value);
   console.log(newsearch);
   const params = Object.assign(newsearch, { page, pageSize });
+  tableDataLoading.value = true;
   getTellerList(params).then((res) => {
+    tableDataLoading.value = false;
     if (res.code === 200) {
       tableData.value = res.data;
       pageObj.value.total = res.total;

@@ -111,6 +111,7 @@
     border
     style="width: 100%"
     header-cell-class-name="table-header-th"
+    v-loading="tableDataLoading"
   >
     <el-table-column type="index" width="50" />
     <el-table-column
@@ -168,12 +169,15 @@ const {
 }: Idatamap = datamap;
 const search = reactive<any>({});
 let tableData = ref<any>([]);
+let tableDataLoading = ref<boolean>(false);
 
 async function getData() {
   const { page, pageSize } = pageObj.value;
   let newsearch = clearEmptyPro(search);
   const params = Object.assign(newsearch, { page, pageSize });
+  tableDataLoading.value = true;
   const res = await getFlowList(params);
+  tableDataLoading.value = false;
   if (res.code === 200) {
     tableData.value = res.data;
     pageObj.value.total = res.total;

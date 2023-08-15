@@ -62,6 +62,7 @@
     :data="tableData"
     style="width: 100%"
     header-cell-class-name="table-header-th"
+    v-loading="tableDataLoading"
   >
     <el-table-column type="index" label="" width="50" align="center" />
     <el-table-column prop="stepname" label="节点名称" width="180" />
@@ -92,6 +93,7 @@ import { datamap, clearEmptyPro } from "@/utils/util";
 const search = reactive<any>({});
 let tableData = ref([]);
 let echarts_data = ref([]);
+let tableDataLoading = ref<boolean>(false);
 let seconds = 10000;
 let timer: any = null;
 const { orgTypeMap, stepNameMap, flowTypeMap } = datamap;
@@ -100,7 +102,9 @@ async function getData() {
   if (Object.entries(newsearch).length > 0 && timer) {
     clearInterval(timer);
   }
+  tableDataLoading.value = true;
   const res = await getTaskList(newsearch);
+  tableDataLoading.value = false;
   if (res.code === 200) {
     tableData.value = res.data;
     echarts_data.value = res.data;
