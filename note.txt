@@ -124,4 +124,31 @@ vue3
 const pageInstance = getCurrentInstance();
 const targetDom = pageInstance.refs['box']
 
+tooltip 面板前面的小圆点
+总结一下，在 Vue 2 中 v-for 的优先级高于 v-if；在 Vue 3 中，v-if 的优先级更高
+
+不支持在 template 元素上绑定属性。比如这里想绑定 key 属性就不行。
+
+ts对象解构并赋值类型  ts的对象object，有时候是数组有时候是函数，只简单设置类型为object有时候会报错
+
+列表搜索 接口
+
+对element默认样式更改需要在css选择器前加/deep/
+/deep/ .pagination .el-pagination__sizes {float: left;}
+
+主岗设置 要watch 以便自动清除select的值   // 先用事件来清除原有值
+
+1.人员配置，搜索 重置
+1.流程汇总，搜索 重置
+1.任务预警，定时器设置 搜索后是不是定时器关了   任务预警->节点名称搜索->要有可搜索功能
+2.菜单ICON
+3.优化代码
+3.注意加loading;
+4.表单重置  loginFormRef.resetFields()
+5.分页问题 
+6.人员配置 角色如何关联 emit会触发两次 有两次close
+流程状态没有
+机构类型字段 
+交易码/名称 是不是输入类型
+
 

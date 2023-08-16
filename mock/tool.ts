@@ -1,15 +1,15 @@
-export const filterData = (query: object, data: any[]) => {
-  if (!query || data.length === 0) {
-    return data;
-  }
-  // query 不包括page pagesize
-  const entries = Object.entries(query);
-  entries.forEach((item, index) => {
-    const [a, b] = item;
-    return item[a] === b;
-  });
-  //TODO
-};
+// export const filterData = (query: object, data: any[]) => {
+//   if (!query || data.length === 0) {
+//     return data;
+//   }
+//   // query 不包括page pagesize
+//   const entries = Object.entries(query);
+//   entries.forEach((item, index) => {
+//     const [a, b] = item;
+//     return item[a] === b;
+//   });
+//   //TODO
+// };
 
 /**
  * @name  getTableData

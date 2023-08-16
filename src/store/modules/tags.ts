@@ -20,7 +20,6 @@ interface stateDataType {
   cache_tags: string[];
   openNames?: string[];
   // activeName?: string,
-  // tranx: string,
 }
 const useHeadTagsStore = defineStore("headTagsStore", {
   state: (): stateDataType => {

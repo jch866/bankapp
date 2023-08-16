@@ -85,9 +85,9 @@ export const taskMock = [
       // if(org_type){ // 表格中暂无此字段数据 org_type flow_type
       //   newData = data.filter(item=>item.org_type === org_type)
       // }
-      // if(flow_type){
-      //   newData = data.filter(item=>item.stepname === stepname)
-      // }
+      if (flow_type) {
+        newData = data.filter((item) => item.stepname === stepname);
+      }
       return { code: 200, data: newData, message: "请求成功" };
     },
   },
