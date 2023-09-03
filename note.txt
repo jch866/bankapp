@@ -8,7 +8,30 @@ property-no-unknown 无效
 写错了属性名，检查不出来；
 无用的样式名，检查不出来；
 
+mitt 事件总线传递参数   库
+npm mitt 是一个 JavaScript 库，用于实现事件的订阅和发布
+$ npm install --save mitt
+import mitt from 'mitt'
+const emitter = mitt()
+emitter.on('foo', e => console.log('foo', e) )
+-----------
+笔记查看  有道云笔记
+v-model = "money" 
+<Child v-model="msg"></Child> 等价于
+<Child v-model:pageNo="msg" v-model:pageSize="msg1"></Child>
 
+:modelValue ="money"
+@update:modelValue = "handler"   // 自定义事件 update:modelValue
+
+  defineProps(['pageNo','pageSize'])    defineEmits(['update:pageNo','update:pageSize'])
+-----------
+import {useAttrs} from 'vue';
+let $attrs = useAttrs();
+
+useAttrs(){
+  return getContext().attrs;
+}
+-----------
 'feat',//新特性、新功能
 'fix',//修改bug
 'docs',//文档修改
@@ -77,3 +100,79 @@ v-show="item.meta.title"  隐藏面包屑信息，比如layout为父路由时
 判断当前是不是全屏模式
 document.fullscreenElement;
 document.documentElement.requestFullscreen() DOM全屏方法
+
+
+router-view v-slot="{ Component }" keepalive ？  
+编辑添加功能
+MOCK数据
+echarts图表
+ 笔数 = 个人待处理+ 公共待处理 
+
+ref 来定义基本数据类型，使用 reactive 来定义复杂数据类型但是也可以使用 ref 来定义数组 
+ reactive  ref  给表格数据赋值时的问题   reactive包装的无效？？ 有个响应式的问题
+ reactive包装的直接赋值数组，会失去响应式；
+1.
+let arr = reactive([]) 
+   arr.push(...newArr)
+2. 外层嵌套一个对象
+let arr = reactive({list:[]});
+   arr.list = [1,2,3]
+3.
+let arr = ref([])
+arr.value = [1,2,3]
+ reactive  ref 区别说明
+https://blog.csdn.net/qq_58247332/article/details/127259618  
+https://blog.csdn.net/yezi__6/article/details/121004044
+
+
+vite-plugin-mock   多种接口配置方法 get post  patch
+机构类型  表格中没显示，要不要在搜索中删除
+
+defineAsyncComponent({loader:()=>import('./xxx.vue)}).then(component=>{})
+<Suspense>
+
+v-bind="obj"   属性一次传一个对象过去
+
+1.props通信 同步直接拿，异步用watch
+2.v-if控制子组件开始挂载的时机
+异步传递属性时 watchEffect(() => {
+  if (props.data?.length!==0) {
+    chartsdata.value = props.data
+  }
+}) 
+
+vue2  获取dom   this.$refs.名字
+vue3  
+1. <div  ref="box"></div>  const box = ref(null)
+2. 通过页面实例拿DOM  测试没通过，没拿到相应DOM
+const pageInstance = getCurrentInstance();
+const targetDom = pageInstance.refs['box']
+
+tooltip 面板前面的小圆点
+总结一下，在 Vue 2 中 v-for 的优先级高于 v-if；在 Vue 3 中，v-if 的优先级更高
+
+不支持在 template 元素上绑定属性。比如这里想绑定 key 属性就不行。
+
+ts对象解构并赋值类型  ts的对象object，有时候是数组有时候是函数，只简单设置类型为object有时候会报错
+
+列表搜索 接口
+
+对element默认样式更改需要在css选择器前加/deep/
+/deep/ .pagination .el-pagination__sizes {float: left;}
+
+主岗设置 要watch 以便自动清除select的值   // 先用事件来清除原有值
+
+1.人员配置，搜索 重置
+1.流程汇总，搜索 重置
+1.任务预警，定时器设置 搜索后是不是定时器关了   任务预警->节点名称搜索->要有可搜索功能
+2.菜单ICON
+3.优化代码
+3.注意加loading;
+4.表单重置  loginFormRef.resetFields()
+5.分页问题 
+6.人员配置 角色如何关联 emit会触发两次 有两次close
+流程状态没有
+机构类型字段 
+交易码/名称 是不是输入类型
+
+
