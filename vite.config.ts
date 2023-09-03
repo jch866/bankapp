@@ -35,7 +35,7 @@ export default defineConfig(({ command, mode }) => {
         },
       },
     },
-    //代理跨域
+    //代理跨域 https://cn.vitejs.dev/config/server-options.html#server-proxy
     // server: {
     //   proxy: {
     //     [env.VITE_APP_BASE_API]: {

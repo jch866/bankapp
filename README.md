@@ -16,3 +16,13 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+ 1.已安装 16.0 或更高版本的 Node.js
+ 2. pnpm install 
+ 3.初次安装失败可在安装依赖前先删除 pnpm-lock.yaml 和 node_modules文件夹；再次运行2步骤
+ 4.npm run dev 查看运行效果
+   username: "admin",
+   password: "111111",
+5.根目录mock 用来存放模拟api；项目所有接口都在此目录中
+6.根目录src 用来存放主要工程代码
+7.目前项目build会出错，用的所有接口都是mock提供
