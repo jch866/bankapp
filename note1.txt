@@ -1,0 +1,291 @@
+const { mapState, mapActions, mapGetters } = require('pinia')
+const { computed, watchEffect, TransitionGroup } = require('vue')
+const { onBeforeRouteUpdate } = require('vue-router')
+v3 demo-project
+@click.stop
+@click.self
+v-for  v-if不要放在一个元素里面；
+
+ vue3开始 ：https://www.bilibili.com/video/BV1Ss4y1T7mZ/?p=38  
+ p=39
+兼容性注意
+
+Vite 需要 Node.js 版本 14.18+，16+。
+然而，有些模板需要依赖更高的 Node 版本才能正常运行，当你的包管理器发出警告时，请注意升级你的 Node 版本。
+
+es6 模块化引入<script type=module></script>
+
+<Navbar class='myclass'></Navbar>
+myclass 透传到组件的根元素上；
+
+inheritAttrs 属性透传
+
+v-bind = $attrs 
+
+slot 在某些情况下可以 省掉跨层级的数据通信
+
+$refs  取dom   取组件实例
+
+
+<KeepAlive>
+
+组件的 v-model
+在原生表单元素中：
+<input v-model="inputValue" />
+相当于
+<input v-bind:value="inputValue" v-on:input="inputValue = $event.target.value" />
+在自定义组件中
+<my-component v-model="inputValue"></my-component>
+相当于
+<my-component v-bind:value="inputValue" v-on:input="inputValue = argument[0]"></my-component>
+
+defineAsyncComponent(() => import('./components/MyComponent.vue')) 异步加载组件
+
+v-solt='myProps'  p=54
+list中某一个item高亮
+ 利用slot 二次加工数据，让数据 展示更多元化 
+
+ v-slot:slotname 也可以用 v-slot  默认插槽 
+
+this.$nextTick(()=>{
+    this.myCharts.resize();
+})
+updated(){this.myCharts.resize();}
+
+p=60
+封装swiper组件；
+
+<TransitionGroup tag='ul'></TransitionGroup>
+p=65 过渡组件封装
+
+p=66 vue3
+
+toRefs 把对象的各个属性转成响应式
+
+p=70
+
+ref  reactive 互转
+
+const count = ref(1)
+const plusOne = computed(() => count.value + 1)
+
+const plusOne = computed({
+  get: () => count.value + 1,
+  set: (val) => {
+    count.value = val - 1
+  }
+})
+
+
+watch(
+  () => state.someObject, // getter
+  (newValue, oldValue) => {
+    // 注意：`newValue` 此处和 `oldValue` 是相等的
+    // *除非* state.someObject 被整个替换了
+  },
+  { deep: true }
+)
+
+watchEffect 自动执行
+
+getCurrentInstance 支持访问内部组件实例。
+
+p=78 路由
+// 如果域名后面什么都不写或者没有和已经定义好的路由匹配的话
+path:"/:pathMatch(.*)*",
+redirect:"/home"  //重定向到home页
+
+router-link 自定义 为指定的节点
+
+重定向的目标也可以是一个命名的路由：
+const routes = [{ path: '/home', redirect: { name: 'homepage' } }]
+
+p=86
+watch:{$router.params}
+beforeRouteUpdate
+
+p=88
+vca 改造 VCA(Vue Composition API)
+
+两个标签共存 但只能各写一次
+<script setup></script>
+<script></script>
+p=93
+
+methods:{
+  ...mapMutations([changeHandler])
+  ...mapActions([getlist])
+}
+computed:{
+  ...mapState([datalist])
+  ...mapGetters([filterlist])
+}
+
+const moduleA = {
+  state: () => ({ ... }),
+  mutations: { ... },
+  actions: { ... },
+  getters: { ... }
+}
+
+const moduleB = {
+  state: () => ({ ... }),
+  mutations: { ... },
+  actions: { ... }
+}
+
+const store = createStore({
+  modules: {
+    a: moduleA,
+    b: moduleB
+  }
+})
+// state  getter
+store.state.a // -> moduleA 的状态
+store.state.b // -> moduleB 的状态
+
+//替换数组中的某个元素js
+var arr = ['apple', 'banana', 'cherry'];
+var newArr = Object.assign([], arr, {1: 'grape'});
+console.log(newArr);
+// Output: ['apple', 'grape', 'cherry']
+-------------------------------------------------
+var arr = ['apple', 'banana', 'cherry'];
+var newArr = Array.from(arr, function(element, index) {
+  if (index === 1) {
+    return 'grape';
+  }
+  return element;
+});
+console.log(newArr);
+// Output: ['apple', 'grape', 'cherry']
+------------------------------------------------------------
+
+var arr = ['apple', 'banana', 'cherry'];
+arr.splice(1, 1, 'grape');
+console.log(arr);
+// Output: ['apple', 'grape', 'cherry']
+
+//通用数据替换方法；
+function replaceArray(primaryArr,insertArr,flag){
+  let obj = {};
+  insertArr.forEach(item=>{
+    let index = primaryArr.findIndex(i=>i[flag] === item[flag]);
+    if(index>-1){
+      obj[index] = item;
+    }
+  })
+  return Object.assign([],primaryArr,obj)
+}
+let a = [{a:1,b:1,label:'aa'},{a:2,b:2,label:'bb'},{a:3,b:3,label:'cc'},{a:4,b:4,label:'dd'}]
+let b = [{a:5,b:6,label:'aa'},{a:8,b:9,label:'cc'}]
+let dd = replaceArray(a,b,'label');
+console.log(dd)
+
+p=95
+vca  不支持vuex中的map等写法；
+
+:deep(.active){
+  覆盖样式
+}
+
+//自动填充A-Z
+var arr = []; // 创建空数组
+for (var i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
+    var char = String.fromCharCode(i); // 将 ASCII 值转换为对应的字符
+    arr.push(char); // 添加到数组中
+}
+console.log(arr); // 输出结果
+p=107
+下拉刷新列表开发；
+p=108
+van-index-bar   开发；
+常见的Python调试工具有pdb、ipdb、PyCharm等。
+
+使用pinia两个步骤
+1.  main.js
+const pinia = createPinia()
+app.use(pinia)
+2. 具体的store
+import { defineStore } from 'pinia'
+export const useAlertsStore = defineStore('alerts', {
+  // 其他配置...
+})
+3. 使用的地方 
+const store = useAlertsStore()
+Setup store 比 Option Store 带来了更多的灵活性，因为你可以在一个 store 内创建侦听器，并自由地使用任何组合式函数。
+在 Setup Store 中：
+ref()      就是 state 属性
+computed() 就是 getters
+function() 就是 actions
+为了从 store 中提取属性时保持其响应性，你需要使用 storeToRefs()。
+const { name, doubleCount } = storeToRefs(store)
+
+------------------------------------------------------------
+<template slot="empty">
+      <div class="noData"></div>
+    </template>
+------------------------------------------------------------
+issue
+Could not find a declaration file for module './Menu.vue'. 'd:/sites/vue-project/src/components/Menu.vue.js' implicitly has an 'any' type.ts
+1: 安装一个包 npm i --save-dev @types/node ，问题解决~ <jch已经验证>
+2：修改tsconfig.json文件，
+追加一下内容
+    "noImplicitAny": false,
+    "allowJs": true,
+
+------------------------------------------------------------
+ 
+一个路径，多个组件 (router-view  命名)
+多个路径  一个组件
+
+detail/100
+detail/101
+路由变化 但内容没加载   mounted没重新执行，要监听$route 或者 beforeRouteUpdate
+
+$attrs $listeners
+引入vuex-persist 插件，它就是为 Vuex 持久化存储而生的一个插件
+
+-------------------
+
+vuex的缺点
+Vuex 是 Vue.js 的状态管理模式和库，它为 Vue 应用提供了一种集中管理所有组件共享状态的机制。尽管 Vuex 为管理复杂状态提供了很多优势，但它也有一些缺点和局限性，了解和权衡这些缺点对于决定是否使用 Vuex 非常重要。以下是一些 Vuex 的主要缺点：
+
+学习曲线和复杂度：
+
+Vuex 需要开发者有一定的学习成本，尤其是对于初学者。理解如何正确使用 state、mutations、actions、getters 和 modules 等概念需要时间。对于小到中等规模的项目，这可能显得过于复杂。
+
+额外的开销：
+
+对于简单的应用，使用 Vuex 可能会引入不必要的复杂性和性能开销。例如，每次状态更新都可能需要通过 Vuex 的 mutations 和 actions 进行，这增加了代码的复杂性和可能的运行时开销。
+
+调试难度：
+
+由于 Vuex 的状态是全局的，跟踪和调试状态变更可能会变得困难，尤其是在大型应用中。开发者需要花费额外的时间来理解和追踪状态流。
+
+过度使用可能导致反模式：
+
+如果不恰当使用，Vuex 可能导致过度设计，例如过度封装状态管理逻辑，使得组件间的数据传递变得过于间接和复杂。这可能导致代码难以理解和维护。
+
+不适合小型项目：
+
+对于小型项目或功能模块较少的项目，使用 Vuex 可能会显得过于笨重。在这种情况下，使用 Vue 的局部状态（如组件的 data 属性）可能更加简单和高效。
+
+性能问题：
+
+在极端情况下，如果 Vuex 的状态树过于庞大或更新过于频繁，可能会影响应用的性能。虽然 Vuex 本身进行了优化，但在某些情况下，仍然需要注意性能调优。
+
+解决方案和建议
+对于小型项目：优先考虑使用组件的局部状态（data），只在需要全局状态管理时引入 Vuex。
+
+逐步引入：在项目中逐步引入 Vuex，从简单的需求开始，逐步扩展到更复杂的状态管理。
+
+使用插件和工具：利用如 Vue Devtools 等工具来帮助调试和跟踪 Vuex 状态。
+
+考虑替代方案：对于某些简单的状态管理需求，可以考虑使用其他轻量级状态管理库，如 Vue 的 provide/inject、$attrs 和 $listeners 或者简单的全局事件总线等。
+
+总之，Vuex 的缺点主要体现在其学习曲线、可能的过度复杂性和在某些场景下的不适用性上。正确评估项目需求和选择合适的状态管理方案是关键。
+-------------------
+
+
+
